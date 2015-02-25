@@ -8,6 +8,12 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes( 'Main-Class': 'javaserver.JavaServer' )
+    }
+}
+
 sourceSets {
     main {
         java {
