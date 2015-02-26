@@ -3,16 +3,13 @@ package javaserver.Responses;
 import javaserver.Requests.HttpRequestParser;
 import javaserver.config.Configuration;
 
-import java.util.Map;
-
-public class PostResponseHandler implements HttpResponseHandler {
-
+public class PutResponseHandler implements HttpResponseHandler {
     private static final String EOL = "\r\n";
     private HttpRequestParser requestParser;
     private Configuration config;
-    private String response = "";
+    private String response;
 
-    public PostResponseHandler(HttpRequestParser requestParser, Configuration config) {
+    public PutResponseHandler(HttpRequestParser requestParser, Configuration config) {
         this.requestParser = requestParser;
         this.config = config;
     }

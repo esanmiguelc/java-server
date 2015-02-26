@@ -4,6 +4,7 @@ import javaserver.Requests.HttpRequestParser;
 import javaserver.Responses.GetResponseHandler;
 import javaserver.Responses.HttpResponseHandler;
 import javaserver.Responses.PostResponseHandler;
+import javaserver.Responses.PutResponseHandler;
 import javaserver.config.Configuration;
 
 import java.io.BufferedReader;
@@ -42,9 +43,9 @@ public class ConnectionHandler extends Thread {
                 case "POST":
                     responseHandler = new PostResponseHandler(requestParser, config);
                     break;
-//                case "PUT":
-//                    return new PutResponse();
-//                    break;
+                case "PUT":
+                    responseHandler =  new PutResponseHandler(requestParser, config);
+                    break;
                 default:
                     break;
             }
