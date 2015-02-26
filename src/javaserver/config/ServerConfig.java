@@ -1,9 +1,9 @@
-package javaserver;
+package javaserver.config;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ServerConfig {
+public class ServerConfig implements Configuration {
 
     private List<String> args;
 
@@ -11,6 +11,7 @@ public class ServerConfig {
         this.args = Arrays.asList(args);
     }
 
+    @Override
     public int getPort() {
         String portCommand = "-p";
         if (args.contains(portCommand))
@@ -18,10 +19,11 @@ public class ServerConfig {
         return 5000;
     }
 
+    @Override
     public String getDirectory() {
         String directoryCommand = "-d";
         if (args.contains(directoryCommand))
             return args.get(args.indexOf(directoryCommand) + 1);
-        return "/";
+        return System.getProperty("user.dir") + "/public";
     }
 }

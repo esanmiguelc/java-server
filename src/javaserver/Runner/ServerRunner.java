@@ -1,7 +1,7 @@
-package Runner;
+package javaserver.Runner;
 
 import javaserver.Handlers.ConnectionHandler;
-import javaserver.ServerConfig;
+import javaserver.config.ServerConfig;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -27,7 +27,7 @@ public class ServerRunner {
             Socket socket = serverSocket.accept();
 
             ConnectionHandler handler = new ConnectionHandler(socket);
-            handler.start();
+            handler.run();
         }
     }
 

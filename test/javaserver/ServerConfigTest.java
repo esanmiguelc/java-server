@@ -1,5 +1,6 @@
 package javaserver;
 
+import javaserver.config.ServerConfig;
 import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 
@@ -9,7 +10,6 @@ public class ServerConfigTest {
         String[] args = new String[2];
         args[0] = "";
         args[1] = "";
-        System.out.println(args.length);
         ServerConfig config = new ServerConfig(args);
         assertEquals(5000, config.getPort());
     }
@@ -36,7 +36,7 @@ public class ServerConfigTest {
     @Test
     public void testGetDefaultDirectory() throws Exception {
         String[] args = new String[2];
-        String directory = "/";
+        String directory = System.getProperty("user.dir") + "/public";
         args[0] = "";
         args[1] = "";
         ServerConfig config = new ServerConfig(args);

@@ -1,16 +1,5 @@
 package javaserver.Responses;
 
-import javaserver.Requests.HttpRequestParser;
-
-public class HttpResponseHandler {
-
-    private HttpRequestParser requestParser;
-
-    public HttpResponseHandler(HttpRequestParser requestParser) {
-        this.requestParser = requestParser;
-    }
-
-    public String getStatusLine() {
-        return "HTTP/1.1 200 OK";
-    }
+public interface HttpResponseHandler {
+    String getStatusLine() throws Exception;
 }
