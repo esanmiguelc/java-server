@@ -1,4 +1,4 @@
-package javaserver;
+package javaserver.Requests;
 
 import org.junit.Test;
 
