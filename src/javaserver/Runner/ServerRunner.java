@@ -16,18 +16,18 @@ public class ServerRunner {
         this.config = config;
     }
 
-    public void run() throws IOException {
+    public void run() throws Exception {
         serverSocket = new ServerSocket(config.getPort());
 
         acceptRequests();
     }
 
-    private void acceptRequests() throws IOException {
+    private void acceptRequests() throws Exception {
         while(true) {
             Socket socket = serverSocket.accept();
 
-            ConnectionHandler handler = new ConnectionHandler(socket);
-            handler.run();
+            ConnectionHandler handler = new ConnectionHandler(socket, config);
+            handler.start();
         }
     }
 

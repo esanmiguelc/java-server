@@ -43,4 +43,9 @@ public class GetResponseHandler implements HttpResponseHandler {
         }
         return response;
     }
+
+    @Override
+    public String getResponse() {
+        return getStatusLine();
+    }
 }
