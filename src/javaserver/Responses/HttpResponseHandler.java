@@ -10,7 +10,7 @@ public class HttpResponseHandler {
         this.requestParser = requestParser;
     }
 
-    public String getResponse() {
+    public String getStatusLine() {
         return "HTTP/1.1 200 OK";
     }
 }

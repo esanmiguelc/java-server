@@ -11,7 +11,7 @@ public class HttpResponseHandlerTest {
         HttpRequestParser requestParser = new HttpRequestParser("");
         HttpResponseHandler responseHandler = new HttpResponseHandler(requestParser);
 
-        assertEquals("HTTP/1.1 200 OK", responseHandler.getResponse());
+        assertEquals("HTTP/1.1 200 OK", responseHandler.getStatusLine());
     }
 
     @Test

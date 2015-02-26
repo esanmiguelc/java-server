@@ -21,7 +21,7 @@ public class HttpRequestParser {
         return splitHeaderVerb()[URI_LOC];
     }
 
-    public String getHttpVersion() {
+    public String getProtocol() {
         return splitHeaderVerb()[HTTP_LOC];
     }
 

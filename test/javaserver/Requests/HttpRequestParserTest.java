@@ -28,6 +28,6 @@ public class HttpRequestParserTest {
         String version = "HTTP/1.1";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(version, requestParser.getHttpVersion());
+        assertEquals(version, requestParser.getProtocol());
     }
 }
