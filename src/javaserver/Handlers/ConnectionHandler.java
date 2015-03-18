@@ -1,10 +1,7 @@
 package javaserver.Handlers;
 
 import javaserver.Requests.HttpRequestParser;
-import javaserver.Responses.GetResponseHandler;
-import javaserver.Responses.HttpResponseHandler;
-import javaserver.Responses.PostResponseHandler;
-import javaserver.Responses.PutResponseHandler;
+import javaserver.Responses.*;
 import javaserver.config.Configuration;
 
 import java.io.BufferedReader;
@@ -35,20 +32,7 @@ public class ConnectionHandler extends Thread {
 
             System.out.println(requestString);
             HttpRequestParser requestParser = new HttpRequestParser(requestString);
-            HttpResponseHandler responseHandler = null;
-            switch (requestParser.getVerb().toUpperCase()) {
-                case "GET":
-                    responseHandler = new GetResponseHandler(requestParser, config);
-                    break;
-                case "POST":
-                    responseHandler = new PostResponseHandler(requestParser, config);
-                    break;
-                case "PUT":
-                    responseHandler =  new PutResponseHandler(requestParser, config);
-                    break;
-                default:
-                    break;
-            }
+            ResponseHandler responseHandler = new ResponseHandler(requestParser, config);
 
             writer.write(responseHandler.getStatusLine().toCharArray());
             writer.close();
