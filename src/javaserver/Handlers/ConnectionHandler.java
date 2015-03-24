@@ -32,7 +32,7 @@ public class ConnectionHandler extends Thread {
 
             System.out.println(requestString);
             HttpRequestParser requestParser = new HttpRequestParser(requestString);
-            ResponseHandler responseHandler = new ResponseHandler(requestParser, config);
+            HttpResponseHandler responseHandler = new HttpResponseHandler(requestParser, config);
 
             writer.write(responseHandler.getStatusLine().toCharArray());
             writer.close();

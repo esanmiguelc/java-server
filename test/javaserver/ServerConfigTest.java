@@ -6,7 +6,7 @@ import static junit.framework.TestCase.assertEquals;
 
 public class ServerConfigTest {
     @Test
-    public void testPortDefaultsTo5000() throws Exception {
+    public void testPortDefaultsTo5000() {
         String[] args = new String[2];
         args[0] = "";
         args[1] = "";
@@ -15,7 +15,7 @@ public class ServerConfigTest {
     }
 
     @Test
-    public void testChangePortWhenPassedCorrectParams() throws Exception {
+    public void testChangePortWhenPassedCorrectParams() {
         String[] args = new String[2];
         args[0] = "-p";
         args[1] = "1337";
@@ -24,7 +24,7 @@ public class ServerConfigTest {
     }
 
     @Test
-    public void testGetRootDirectory() throws Exception {
+    public void testGetRootDirectory() {
         String[] args = new String[2];
         String directory = "some/root/dir";
         args[0] = "-d";
@@ -34,7 +34,7 @@ public class ServerConfigTest {
     }
 
     @Test
-    public void testGetDefaultDirectory() throws Exception {
+    public void testGetDefaultDirectory() {
         String[] args = new String[2];
         String directory = System.getProperty("user.dir") + "/public";
         args[0] = "";

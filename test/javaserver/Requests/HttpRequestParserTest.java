@@ -8,7 +8,7 @@ public class HttpRequestParserTest {
 
     private String request = "GET / HTTP/1.1 \r\n";
     @Test
-    public void testGetsTheCorrectVerb() throws Exception {
+    public void testGetsTheCorrectVerb() {
         String verb = "GET";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
@@ -16,7 +16,7 @@ public class HttpRequestParserTest {
     }
 
     @Test
-    public void testGetsTheURIRoute() throws Exception {
+    public void testGetsTheURIRoute() {
         String uri = "/";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
@@ -24,7 +24,7 @@ public class HttpRequestParserTest {
     }
 
     @Test
-    public void testGetsHttpVersion() throws Exception {
+    public void testGetsHttpVersion() {
         String version = "HTTP/1.1";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
