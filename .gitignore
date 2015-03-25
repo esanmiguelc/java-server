@@ -2,7 +2,7 @@ reated by https://www.gitignore.io
 
 
 deploy_server
-### Intellij ###
+## Intellij ##
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
 *.iml
