@@ -24,6 +24,15 @@ public class HttpRequestParserTest {
     }
 
     @Test
+    public void testGetsTheURIRouteWithPath() {
+        String uri = "/foobar";
+        String request = "GET /foobar HTTP/1.1 \r\n";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertEquals(uri, requestParser.getURI());
+    }
+
+    @Test
     public void testGetsHttpVersion() {
         String version = "HTTP/1.1";
         HttpRequestParser requestParser = new HttpRequestParser(request);

@@ -3,7 +3,6 @@ package javaserver.Runner;
 import javaserver.Handlers.ConnectionHandler;
 import javaserver.config.ServerConfig;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 

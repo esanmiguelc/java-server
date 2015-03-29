@@ -2,6 +2,7 @@ package javaserver;
 
 import javaserver.config.ServerConfig;
 import org.junit.Test;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class ServerConfigTest {

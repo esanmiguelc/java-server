@@ -1,7 +1,7 @@
 package javaserver.Handlers;
 
 import javaserver.Requests.HttpRequestParser;
-import javaserver.Responses.*;
+import javaserver.Responses.HttpResponseHandler;
 import javaserver.config.Configuration;
 
 import java.io.BufferedReader;
@@ -32,7 +32,7 @@ public class ConnectionHandler extends Thread {
 
             System.out.println(requestString);
             HttpRequestParser requestParser = new HttpRequestParser(requestString);
-            HttpResponseHandler responseHandler = new HttpResponseHandler(requestParser, config);
+            HttpResponseHandler responseHandler = new HttpResponseHandler(requestParser);
 
             writer.write(responseHandler.getStatusLine().toCharArray());
             writer.close();
