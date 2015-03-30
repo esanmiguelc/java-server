@@ -5,10 +5,10 @@ jdk:
 script:
   - jdk_switcher use oraclejdk8
   - ./gradlew check
-  - jdk_switcher use oraclejdk7
   - git submodule update
   - gradle build
   - cd cob_spec/
+  - jdk_switcher use oraclejdk7
   - mvn package
   - java -jar fitnesse.jar -c "PassingTestSuite?suite&format=text"
 
