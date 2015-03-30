@@ -10,6 +10,8 @@ deploy_server
 ## Directory-based project format:
 .idea/
 
+nohup.out
+
 ## File-based project format:
 *.ipr
 *.iws

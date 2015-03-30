@@ -14,11 +14,9 @@ public class ConnectionHandler extends Thread {
     private PrintWriter writer;
     private Socket socket;
     private BufferedReader reader;
-    private Configuration config;
 
-    public ConnectionHandler(Socket socket, Configuration config) throws Exception {
+    public ConnectionHandler(Socket socket) throws Exception {
         this.socket = socket;
-        this.config = config;
         reader = new BufferedReader(new InputStreamReader((socket.getInputStream())));
         writer = new PrintWriter(socket.getOutputStream());
     }

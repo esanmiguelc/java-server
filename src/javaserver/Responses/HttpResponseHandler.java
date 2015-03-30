@@ -14,16 +14,17 @@ public class HttpResponseHandler implements ResponseHandler {
 
     @Override
     public String getStatusLine() {
-        if(requestParser.getURI().contains("foobar")) {
-            response += "HTTP/1.1 404 Not Found" + EOL;
-        } else {
-            response += "HTTP/1.1 200 OK" + EOL;
-        }
+        response += "HTTP/1.1 200 OK" + EOL;
         response += "Server: Emmanuel's Java Server/1.0" + EOL;
         response += "Content-Type: text/html" + EOL;
-        response += "Status: 200 OK" + EOL;
-        response += "Request Type: " + requestParser.getVerb();
+        response += "Request Type: " + requestParser.getVerb() + EOL;
         response += EOL;
+        response += "Protocol: " + requestParser.getProtocol() + EOL;
+        response += "URI: " + requestParser.getURI() + EOL;
+        response += "Method: " + requestParser.getVerb() + EOL;
+        if(requestParser.getURI().contains("foobar")) {
+            response = response.replace("200 OK", "404 Not Found");
+        }
 
         return response;
     }

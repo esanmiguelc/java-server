@@ -16,7 +16,9 @@ public class ServerRunner {
     }
 
     public void run() throws Exception {
+        System.out.println("Server is starting...");
         serverSocket = new ServerSocket(config.getPort());
+        System.out.println("Listening on port: " + config.getPort());
 
         acceptRequests();
     }
@@ -25,7 +27,7 @@ public class ServerRunner {
         while(true) {
             Socket socket = serverSocket.accept();
 
-            ConnectionHandler handler = new ConnectionHandler(socket, config);
+            ConnectionHandler handler = new ConnectionHandler(socket);
             handler.start();
         }
     }
