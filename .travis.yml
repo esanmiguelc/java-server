@@ -6,6 +6,7 @@ script:
   - jdk_switcher use oraclejdk8
   - ./gradlew check
   - jdk_switcher use oraclejdk7
+  - git submodule update
   - cd cob_spec/
   - mvn package
   - java -jar fitnesse.jar -c "PassingTestSuite?suite&format=text"
