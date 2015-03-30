@@ -2,6 +2,9 @@ language: java
 jdk:
   - oraclejdk8
     
+before_script:
+  - gradle build
+
 script:
   - jdk_switcher use oraclejdk8
   - ./gradlew check
