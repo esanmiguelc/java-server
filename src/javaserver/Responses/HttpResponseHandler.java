@@ -3,6 +3,10 @@ package javaserver.Responses;
 import javaserver.Requests.HttpRequestParser;
 import javaserver.config.Configuration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class HttpResponseHandler implements ResponseHandler {
     private static final String EOL = "\r\n";
     private HttpRequestParser requestParser;
@@ -22,10 +26,13 @@ public class HttpResponseHandler implements ResponseHandler {
         response += "Protocol: " + requestParser.getProtocol() + EOL;
         response += "URI: " + requestParser.getURI() + EOL;
         response += "Method: " + requestParser.getVerb() + EOL;
-        if(requestParser.getURI().contains("foobar")) {
+        if(!availableRoutes().contains(requestParser.getURI())) {
             response = response.replace("200 OK", "404 Not Found");
         }
-
         return response;
+    }
+
+    private List<String> availableRoutes() {
+        return Arrays.asList("/");
     }
 }
