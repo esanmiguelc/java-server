@@ -3,12 +3,12 @@ jdk:
   - oraclejdk8
 
 script:
-  - jdk_switcher use oraclejdk8
   - ./gradlew check
   - git submodule update
   - gradle build
   - cd cob_spec/
   - jdk_switcher use oraclejdk7
   - mvn package
+  - jdk_switcher use oraclejdk8
   - java -jar fitnesse.jar -c "PassingTestSuite?suite&format=text"
 

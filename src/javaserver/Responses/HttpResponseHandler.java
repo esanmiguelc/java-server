@@ -33,6 +33,6 @@ public class HttpResponseHandler implements ResponseHandler {
     }
 
     private List<String> availableRoutes() {
-        return Arrays.asList("/");
+        return Arrays.asList("/", "/form");
     }
 }
