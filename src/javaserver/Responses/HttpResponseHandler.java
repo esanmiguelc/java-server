@@ -11,9 +11,11 @@ public class HttpResponseHandler implements ResponseHandler {
     private static final String EOL = "\r\n";
     private HttpRequestParser requestParser;
     private String response = "";
+    private RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
     public HttpResponseHandler(HttpRequestParser requestParser) {
         this.requestParser = requestParser;
+        this.routes.registerRoute("/");
     }
 
     @Override
@@ -26,13 +28,9 @@ public class HttpResponseHandler implements ResponseHandler {
         response += "Protocol: " + requestParser.getProtocol() + EOL;
         response += "URI: " + requestParser.getURI() + EOL;
         response += "Method: " + requestParser.getVerb() + EOL;
-        if(!availableRoutes().contains(requestParser.getURI())) {
+        if(!RoutesRegistrar.getInstance().containsRoute(requestParser.getURI())) {
             response = response.replace("200 OK", "404 Not Found");
         }
         return response;
-    }
-
-    private List<String> availableRoutes() {
-        return Arrays.asList("/", "/form");
     }
 }

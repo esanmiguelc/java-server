@@ -1,5 +1,6 @@
 package javaserver;
 
+import javaserver.Responses.RoutesRegistrar;
 import javaserver.Runner.ServerRunner;
 import javaserver.config.ServerConfig;
 

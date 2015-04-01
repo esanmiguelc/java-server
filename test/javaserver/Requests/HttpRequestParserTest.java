@@ -8,8 +8,17 @@ public class HttpRequestParserTest {
 
     private String request = "GET / HTTP/1.1 \r\n";
     @Test
-    public void testGetsTheCorrectVerb() {
+    public void testGetsTheCorrectVerbGet() {
         String verb = "GET";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertEquals(verb, requestParser.getVerb());
+    }
+
+    @Test
+    public void testGetsTheCorrectVerbPost() {
+        String verb = "POST";
+        String request = "POST / HTTP/1.1 \r\n";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertEquals(verb, requestParser.getVerb());
