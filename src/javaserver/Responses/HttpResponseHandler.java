@@ -19,7 +19,7 @@ public class HttpResponseHandler implements ResponseHandler {
     }
 
     @Override
-    public String getStatusLine() {
+    public String statusLine() {
         response += "HTTP/1.1 200 OK" + EOL;
         response += "Server: Emmanuel's Java Server/1.0" + EOL;
         response += "Content-Type: text/html" + EOL;

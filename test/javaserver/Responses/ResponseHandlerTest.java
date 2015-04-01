@@ -13,12 +13,12 @@ public class ResponseHandlerTest {
     @Test
     public void testReturns200ForAvailableRoute() throws Exception {
         ResponseHandler handler = new HttpResponseHandler(new HttpRequestParser("GET / HTTP/1.1 \r\n"));
-        assertThat(handler.getStatusLine().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
+        assertThat(handler.statusLine().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
 
     @Test
     public void testReturns404ForUnavailableRoute() throws Exception {
         ResponseHandler handler = new HttpResponseHandler(new HttpRequestParser("GET /foobar HTTP/1.1 \r\n"));
-        assertTrue(handler.getStatusLine().contains("HTTP/1.1 404 Not Found"));
+        assertTrue(handler.statusLine().contains("HTTP/1.1 404 Not Found"));
     }
 }
