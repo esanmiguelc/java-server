@@ -7,12 +7,13 @@ import static org.junit.Assert.assertEquals;
 public class HttpRequestParserTest {
 
     private String request = "GET / HTTP/1.1 \r\n";
+
     @Test
     public void testGetsTheCorrectVerbGet() {
         String verb = "GET";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(verb, requestParser.getVerb());
+        assertEquals(verb, requestParser.httpMethod());
     }
 
     @Test
@@ -21,7 +22,7 @@ public class HttpRequestParserTest {
         String request = "POST / HTTP/1.1 \r\n";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(verb, requestParser.getVerb());
+        assertEquals(verb, requestParser.httpMethod());
     }
 
     @Test
@@ -29,7 +30,7 @@ public class HttpRequestParserTest {
         String uri = "/";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(uri, requestParser.getURI());
+        assertEquals(uri, requestParser.uri());
     }
 
     @Test
@@ -38,7 +39,7 @@ public class HttpRequestParserTest {
         String request = "GET /foobar HTTP/1.1 \r\n";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(uri, requestParser.getURI());
+        assertEquals(uri, requestParser.uri());
     }
 
     @Test
@@ -46,6 +47,16 @@ public class HttpRequestParserTest {
         String version = "HTTP/1.1";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(version, requestParser.getProtocol());
+        assertEquals(version, requestParser.protocol());
+    }
+
+    @Test
+    public void testRequestHeaders() {
+        String host = "localhost:5000";
+        request += "Host: " + host + "\r\n";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertEquals(host, requestParser.getHeader("Host"));
+
     }
 }
