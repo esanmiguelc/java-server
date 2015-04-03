@@ -1,7 +1,9 @@
 package javaserver.Handlers;
 
 import javaserver.Requests.HttpRequestParser;
-import javaserver.Responses.HttpResponseHandler;
+import javaserver.Requests.Logger;
+import javaserver.Requests.RequestHandler;
+import javaserver.Responses.HttpResponseBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,10 +14,12 @@ public class ConnectionHandler extends Thread {
 
     private PrintWriter writer;
     private Socket socket;
+    private Logger logger;
     private BufferedReader reader;
 
-    public ConnectionHandler(Socket socket) throws Exception {
+    public ConnectionHandler(Socket socket, Logger logger) throws Exception {
         this.socket = socket;
+        this.logger = logger;
         reader = new BufferedReader(new InputStreamReader((socket.getInputStream())));
         writer = new PrintWriter(socket.getOutputStream());
     }
@@ -29,7 +33,9 @@ public class ConnectionHandler extends Thread {
 
             System.out.println(requestString);
             HttpRequestParser requestParser = new HttpRequestParser(requestString);
-            HttpResponseHandler responseHandler = new HttpResponseHandler(requestParser);
+            logger.addLog(requestParser.statusCode());
+            RequestHandler requestHandler = new RequestHandler(requestParser, logger);
+            HttpResponseBuilder responseHandler = new HttpResponseBuilder(requestHandler);
 
             writer.write(responseHandler.statusLine().toCharArray());
             writer.close();

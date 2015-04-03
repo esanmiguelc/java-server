@@ -1,5 +1,6 @@
 package javaserver.Responses;
 
+import javaserver.Routes.RoutesRegistrar;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,25 +19,39 @@ public class RoutesRegistrarTest {
 
     @Test
     public void testNoRoutes() {
-        assertThat(routes.getRoutes().isEmpty(), is(equalTo(true)));
+        assertThat(routes.routes().isEmpty(), is(equalTo(true)));
     }
 
     @Test
     public void testIsNotEmpty() {
-        routes.registerRoute("/");
-        assertThat(routes.getRoutes().isEmpty(), is(equalTo(false)));
+        routes.registerRoute("/", false);
+        assertThat(routes.routes().isEmpty(), is(equalTo(false)));
     }
 
     @Test
     public void testDoesNotContainSpecificRoute() {
         String path = "/";
-        assertThat(routes.containsRoute(path),is(equalTo(false)));
+        assertThat(routes.containsRoute(path), is(equalTo(false)));
     }
 
     @Test
     public void testContainsSpecificRoute() {
         String path = "/";
-        routes.registerRoute(path);
-        assertThat(routes.containsRoute(path),is(equalTo(true)));
+        routes.registerRoute(path, false, "POST", "GET");
+        assertThat(routes.containsRoute(path), is(equalTo(true)));
+    }
+
+    @Test
+    public void testFindRoute() {
+        String path = "/";
+        routes.registerRoute(path, false, "POST", "GET");
+        assertThat(routes.containsRoute(path), is(equalTo(true)));
+    }
+
+    @Test
+    public void testGetRoute() {
+        String path = "/";
+        routes.registerRoute(path, false, "POST", "GET");
+        assertThat(routes.getRoute(path).getPath(), is(equalTo(path)));
     }
 }

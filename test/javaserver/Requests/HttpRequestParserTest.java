@@ -2,7 +2,10 @@ package javaserver.Requests;
 
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class HttpRequestParserTest {
 
@@ -57,6 +60,20 @@ public class HttpRequestParserTest {
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertEquals(host, requestParser.getHeader("Host"));
+    }
 
+    @Test
+    public void testDoesNotContainHeader() {
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+        assertThat(requestParser.containsHeader("SomeHeader"), is(equalTo(false)));
+    }
+
+    @Test
+    public void testContainsHeader() {
+        String host = "localhost:5000";
+        request += "Host: " + host + "\r\n";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.containsHeader("Host"), is(equalTo(true)));
     }
 }

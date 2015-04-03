@@ -20,27 +20,33 @@ public class HttpRequestParser {
         this.headers = parseHeaders();
     }
 
+    public String httpMethod() {
+        return splitStatusLine()[VERB_LOC];
+    }
+
+    public String uri() {
+        return splitStatusLine()[URI_LOC];
+    }
+
+    public String protocol() {
+        return splitStatusLine()[HTTP_LOC];
+    }
+
+    public String statusCode() {
+        return httpMethod() + " " + uri() + " " + protocol();
+    }
+
+    public String getHeader(String key) {
+        return headers.get(key);
+    }
+
     private List<String> requestList(String request) {
         return Arrays.asList(request.split("\n")).stream()
                 .map((string) -> string.replaceAll("[\n\r]+", ""))
                 .collect(Collectors.toList());
-
     }
 
-    public String httpMethod() {
-        return splitHeaderVerb()[VERB_LOC];
-    }
-
-
-    public String uri() {
-        return splitHeaderVerb()[URI_LOC];
-    }
-
-    public String protocol() {
-        return splitHeaderVerb()[HTTP_LOC];
-    }
-
-    private String[] splitHeaderVerb() {
+    private String[] splitStatusLine() {
         return request.get(0).split(" ");
     }
 
@@ -50,13 +56,14 @@ public class HttpRequestParser {
                 .filter((line) -> line.matches("\\w+:\\s.+"))
                 .collect(Collectors.toList());
         for(String header : headers) {
-            String[] splitHeader = header.split(" ");
-            parsed.put(splitHeader[0].replaceAll("\\W", ""), splitHeader[1]);
+            String headerKey = header.substring(0, header.indexOf(" ")).replaceAll("\\W", "");
+            String headerValue = header.substring(header.indexOf(" ") + 1);
+            parsed.put(headerKey, headerValue);
         }
         return parsed;
     }
 
-    public String getHeader(String key) {
-        return headers.get(key);
+    public boolean containsHeader(String key) {
+        return headers.containsKey(key);
     }
 }
