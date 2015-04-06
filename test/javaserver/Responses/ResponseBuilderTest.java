@@ -2,6 +2,7 @@ package javaserver.Responses;
 
 import javaserver.Requests.HttpRequestParser;
 import javaserver.Requests.RequestHandler;
+import javaserver.Routes.RoutesRegistrar;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -28,7 +29,9 @@ public class ResponseBuilderTest {
 
     @Test
     public void testLogsShouldBeUnauthorized() throws Exception {
-        HttpRequestParser requestParser = new HttpRequestParser("GET /logs HTTP/1.1 \r\n");
+        String route = "/logs";
+        RoutesRegistrar.getInstance().registerRoute(route, true);
+        HttpRequestParser requestParser = new HttpRequestParser("GET " + route + " HTTP/1.1");
         ResponseBuilder handler = new HttpResponseBuilder(new RequestHandler(requestParser));
         assertThat(handler.statusLine().contains("HTTP/1.1 401 Unauthorized"), is(equalTo(true)));
     }
