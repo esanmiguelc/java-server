@@ -1,6 +1,7 @@
 package javaserver.Runner;
 
 import javaserver.Handlers.ConnectionHandler;
+import javaserver.Requests.Logger;
 import javaserver.config.ServerConfig;
 
 import java.net.ServerSocket;
@@ -24,10 +25,11 @@ public class ServerRunner {
     }
 
     private void acceptRequests() throws Exception {
+        Logger logger = new Logger();
         while(true) {
             Socket socket = serverSocket.accept();
 
-            ConnectionHandler handler = new ConnectionHandler(socket);
+            ConnectionHandler handler = new ConnectionHandler(socket, logger);
             handler.start();
         }
     }

@@ -2,17 +2,30 @@ package javaserver.Requests;
 
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class HttpRequestParserTest {
 
     private String request = "GET / HTTP/1.1 \r\n";
+
     @Test
-    public void testGetsTheCorrectVerb() {
+    public void testGetsTheCorrectVerbGet() {
         String verb = "GET";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(verb, requestParser.getVerb());
+        assertEquals(verb, requestParser.httpMethod());
+    }
+
+    @Test
+    public void testGetsTheCorrectVerbPost() {
+        String verb = "POST";
+        String request = "POST / HTTP/1.1 \r\n";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertEquals(verb, requestParser.httpMethod());
     }
 
     @Test
@@ -20,7 +33,7 @@ public class HttpRequestParserTest {
         String uri = "/";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(uri, requestParser.getURI());
+        assertEquals(uri, requestParser.uri());
     }
 
     @Test
@@ -29,7 +42,7 @@ public class HttpRequestParserTest {
         String request = "GET /foobar HTTP/1.1 \r\n";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(uri, requestParser.getURI());
+        assertEquals(uri, requestParser.uri());
     }
 
     @Test
@@ -37,6 +50,30 @@ public class HttpRequestParserTest {
         String version = "HTTP/1.1";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
-        assertEquals(version, requestParser.getProtocol());
+        assertEquals(version, requestParser.protocol());
+    }
+
+    @Test
+    public void testRequestHeaders() {
+        String host = "localhost:5000";
+        request += "Host: " + host + "\r\n";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertEquals(host, requestParser.getHeader("Host"));
+    }
+
+    @Test
+    public void testDoesNotContainHeader() {
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+        assertThat(requestParser.containsHeader("SomeHeader"), is(equalTo(false)));
+    }
+
+    @Test
+    public void testContainsHeader() {
+        String host = "localhost:5000";
+        request += "Host: " + host + "\r\n";
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.containsHeader("Host"), is(equalTo(true)));
     }
 }
