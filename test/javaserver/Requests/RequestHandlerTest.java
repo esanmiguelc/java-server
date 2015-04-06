@@ -16,6 +16,8 @@ public class RequestHandlerTest {
         RoutesRegistrar.getInstance().registerRoute("/", false);
         RoutesRegistrar.getInstance().registerRoute("/logs", true);
         RoutesRegistrar.getInstance().registerRoute("/method_options", true, "GET", "POST", "OPTIONS");
+        RoutesRegistrar.getInstance().registerRoute("/form", false);
+
     }
 
     @Test
@@ -73,20 +75,21 @@ public class RequestHandlerTest {
         String request = "GET /form HTTP/1.1";
         HttpRequestParser parser = new HttpRequestParser(request);
         RequestHandler handler = new RequestHandler(parser);
-        assertThat(handler.content(), is(equalTo(null)));
+        assertThat(handler.content(), is(equalTo("")));
     }
 
     @Test
     public void testDataParams() {
-        String postRequest = "POST /form HTTP/1.1";
-        String data = "data=fatcat";
+        String postRequest = "POST /form HTTP/1.1" + StringModifier.EOL;
+        String data = "data=fatcat" + StringModifier.EOL;
         HttpRequestParser postParser = new HttpRequestParser(postRequest);
-        RequestHandler gethandler = new RequestHandler(postParser);
-        String getRequest = "GET /form HTTP/1.1";
-        getRequest += data;
+        RequestHandler postHandler = new RequestHandler(postParser);
+        postHandler.status();
+        String getRequest = "GET /form HTTP/1.1" + StringModifier.EOL;
+
+        getRequest += data + StringModifier.EOL;
         HttpRequestParser getParser = new HttpRequestParser(getRequest);
         RequestHandler getHandler = new RequestHandler(getParser);
-
         assertThat(getHandler.content().contains(data), is(equalTo(true)));
     }
 }

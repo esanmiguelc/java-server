@@ -2,6 +2,7 @@ package javaserver.Requests;
 
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
+import javaserver.StringModifier;
 
 import java.util.Map;
 
@@ -72,9 +73,11 @@ public class RequestHandler {
             case OK:
                 if (parser.httpMethod().equals("GET")) {
                     if (!parser.params().isEmpty()) {
+                        String params = "";
                         for (Map.Entry<String, String> param : parser.params().entrySet()) {
-                            return param.getKey() + "=" + param.getValue();
+                            params += param.getKey() + "=" + param.getValue() + StringModifier.EOL;
                         }
+                        return params;
                     } else {
                         return "";
                     }
