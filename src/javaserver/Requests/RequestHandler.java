@@ -3,6 +3,8 @@ package javaserver.Requests;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 
+import java.util.Map;
+
 public class RequestHandler {
 
     public static final String OK = "200 OK";
@@ -28,9 +30,10 @@ public class RequestHandler {
 
     public String status() {
         if(containsRoute()) {
-            if(routes.isSecured(parser.uri())) {
-                if(parser.containsHeader("Authorization")) {
-                    if(isAuthenticated()) {
+            routes.getRoute(parser.uri()).setCurrentParams(parser.params());
+            if (routes.isSecured(parser.uri())) {
+                if (parser.containsHeader("Authorization")) {
+                    if (isAuthenticated()) {
                         return OK;
                     } else {
                         return UNAUTHORIZED;
@@ -67,11 +70,20 @@ public class RequestHandler {
             case UNAUTHORIZED:
                 return "Authentication required";
             case OK:
+                if (parser.httpMethod().equals("GET")) {
+                    if (!parser.params().isEmpty()) {
+                        for (Map.Entry<String, String> param : parser.params().entrySet()) {
+                            return param.getKey() + "=" + param.getValue();
+                        }
+                    } else {
+                        return "";
+                    }
+                }
                 if(parser.uri().equals("/logs")) {
                     return logger.logs();
                 }
             default:
-                return null;
+                return "";
         }
     }
 
