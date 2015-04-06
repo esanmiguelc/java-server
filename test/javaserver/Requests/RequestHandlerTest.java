@@ -61,10 +61,10 @@ public class RequestHandlerTest {
 
     @Test
     public void testContentsForUnauthorized() {
-        String msg = "Authentication required";
+        String message = "Authentication required";
         HttpRequestParser parser = new HttpRequestParser("OPTIONS /logs HTTP/1.1");
         RequestHandler handler = new RequestHandler(parser);
-        assertThat(handler.content(), is(equalTo(msg)));
+        assertThat(handler.content(), is(equalTo(message)));
 
     }
 }
