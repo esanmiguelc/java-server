@@ -2,6 +2,7 @@ reated by https://www.gitignore.io
 
 
 deploy_server.sh
+server_check.sh
 ## Intellij ##
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
