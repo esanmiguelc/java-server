@@ -8,6 +8,8 @@ public class RequestHandler {
     public static final String OK = "200 OK";
     public static final String NOT_FOUND = "404 Not Found";
     public static final String UNAUTHORIZED = "401 Unauthorized";
+    public static final String ENCRYPTED = "Basic YWRtaW46aHVudGVyMg==";
+    public static final String EOL = "\r\n";
 
     private final RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
@@ -55,7 +57,7 @@ public class RequestHandler {
         if(containsRoute()
                 && parser.httpMethod().equals("OPTIONS")
                 && route.getMethods().contains("OPTIONS")) {
-            return "Allow: " + String.join(",", route.getMethods()) + "\r\n";
+            return "Allow: " + String.join(",", route.getMethods()) + EOL;
         }
         return "";
     }
@@ -74,6 +76,6 @@ public class RequestHandler {
     }
 
     private boolean isAuthenticated() {
-        return parser.getHeader("Authorization").equals("Basic YWRtaW46aHVudGVyMg==");
+        return parser.getHeader("Authorization").equals(ENCRYPTED);
     }
 }
