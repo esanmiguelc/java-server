@@ -71,15 +71,15 @@ public class RequestHandler {
             case UNAUTHORIZED:
                 return "Authentication required";
             case OK:
+                String content = "";
                 if (parser.httpMethod().equals("GET")) {
                     if (!parser.params().isEmpty()) {
-                        String params = "";
                         for (Map.Entry<String, String> param : parser.params().entrySet()) {
-                            params += param.getKey() + "=" + param.getValue() + StringModifier.EOL;
+                            content += param.getKey() + "=" + param.getValue() + StringModifier.EOL;
                         }
-                        return params;
+                        return content;
                     } else {
-                        return "";
+                        return content;
                     }
                 }
                 if(parser.uri().equals("/logs")) {

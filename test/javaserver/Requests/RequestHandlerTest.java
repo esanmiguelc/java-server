@@ -1,5 +1,6 @@
 package javaserver.Requests;
 
+import javaserver.Responses.HttpResponseBuilder;
 import javaserver.Routes.RoutesRegistrar;
 import javaserver.StringModifier;
 import org.junit.Before;
@@ -90,6 +91,7 @@ public class RequestHandlerTest {
         getRequest += data + StringModifier.EOL;
         HttpRequestParser getParser = new HttpRequestParser(getRequest);
         RequestHandler getHandler = new RequestHandler(getParser);
+        System.out.println(new HttpResponseBuilder(getHandler).statusLine());
         assertThat(getHandler.content().contains(data), is(equalTo(true)));
     }
 }
