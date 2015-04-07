@@ -3,6 +3,9 @@ package javaserver.Responses;
 import javaserver.Requests.RequestHandler;
 import javaserver.StringModifier;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class HttpResponseBuilder implements ResponseBuilder {
 
     
@@ -19,13 +22,16 @@ public class HttpResponseBuilder implements ResponseBuilder {
 
     @Override
     public String statusLine() {
-        response += HTTP_VERSION + " " + requestHandler.status() + StringModifier.EOL;
-        response += SERVER_NAME + StringModifier.EOL;
-        response += CONTENT_TYPE_TEXT_HTML + StringModifier.EOL;
-        response += TYPE_HEADER + " " + requestHandler.httpMethod() + StringModifier.EOL;
-        response += requestHandler.availableMethods() + StringModifier.EOL;
-        response += StringModifier.EOL;
-        response += requestHandler.content() + StringModifier.EOL;
+        List<String> lines = Arrays.asList(HTTP_VERSION + " " + requestHandler.status(),
+                SERVER_NAME,
+                CONTENT_TYPE_TEXT_HTML,
+                TYPE_HEADER + " " + requestHandler.httpMethod(),
+                requestHandler.availableMethods(),
+                requestHandler.content()
+        );
+        lines.stream()
+                .forEach((line) -> response += line + StringModifier.EOL);
+
         return response;
     }
 }

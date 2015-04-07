@@ -83,12 +83,13 @@ public class RequestHandlerTest {
     public void testDataParams() {
         String postRequest = "POST /form HTTP/1.1" + StringModifier.EOL;
         String data = "data=fatcat" + StringModifier.EOL;
+        postRequest += data;
         HttpRequestParser postParser = new HttpRequestParser(postRequest);
         RequestHandler postHandler = new RequestHandler(postParser);
         postHandler.status();
+        System.out.println(RoutesRegistrar.getInstance().getRoute("/form"));
         String getRequest = "GET /form HTTP/1.1" + StringModifier.EOL;
 
-        getRequest += data + StringModifier.EOL;
         HttpRequestParser getParser = new HttpRequestParser(getRequest);
         RequestHandler getHandler = new RequestHandler(getParser);
         System.out.println(new HttpResponseBuilder(getHandler).statusLine());

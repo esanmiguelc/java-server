@@ -28,8 +28,9 @@ public class ConnectionHandler extends Thread {
         try {
             String requestString = "";
 
-            while (reader.ready() || requestString.length() == 0)
+            while (reader.ready() || requestString.length() == 0) {
                 requestString += (char) reader.read();
+            }
 
             System.out.println(requestString);
             System.out.println("");

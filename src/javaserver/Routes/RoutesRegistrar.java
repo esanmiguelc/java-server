@@ -24,10 +24,6 @@ public class RoutesRegistrar {
         return new ArrayList<>(routes.values());
     }
 
-    public void reset() {
-        this.routes = new HashMap<>();
-    }
-
     public boolean containsRoute(String path) {
         return routes.containsKey(path);
     }
@@ -38,5 +34,9 @@ public class RoutesRegistrar {
 
     public boolean isSecured(String path) {
         return routes.get(path).isSecured();
+    }
+
+    public void reset() {
+        this.routes = new HashMap<>();
     }
 }

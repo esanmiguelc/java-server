@@ -4,6 +4,7 @@ import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 import javaserver.StringModifier;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RequestHandler {
@@ -12,7 +13,6 @@ public class RequestHandler {
     public static final String NOT_FOUND = "404 Not Found";
     public static final String UNAUTHORIZED = "401 Unauthorized";
     public static final String ENCRYPTED = "Basic YWRtaW46aHVudGVyMg==";
-    public static final String EOL = "\r\n";
 
     private final RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
@@ -31,7 +31,9 @@ public class RequestHandler {
 
     public String status() {
         if(containsRoute()) {
-            routes.getRoute(parser.uri()).setCurrentParams(parser.params());
+            if(!parser.params().isEmpty()) {
+                routes.getRoute(parser.uri()).setCurrentParams(parser.params());
+            }
             if (routes.isSecured(parser.uri())) {
                 if (parser.containsHeader("Authorization")) {
                     if (isAuthenticated()) {
@@ -61,7 +63,7 @@ public class RequestHandler {
         if(containsRoute()
                 && parser.httpMethod().equals("OPTIONS")
                 && route.getMethods().contains("OPTIONS")) {
-            return "Allow: " + String.join(",", route.getMethods()) + EOL;
+            return "Allow: " + String.join(",", route.getMethods()) + StringModifier.EOL;
         }
         return "";
     }
@@ -72,19 +74,22 @@ public class RequestHandler {
                 return "Authentication required";
             case OK:
                 String content = "";
-                if (parser.httpMethod().equals("GET")) {
-                    if (!parser.params().isEmpty()) {
-                        for (Map.Entry<String, String> param : parser.params().entrySet()) {
-                            content += param.getKey() + "=" + param.getValue() + StringModifier.EOL;
-                        }
-                        return content;
-                    } else {
-                        return content;
-                    }
-                }
                 if(parser.uri().equals("/logs")) {
                     return logger.logs();
                 }
+                if(parser.httpMethod().equals("DELETE")) {
+                    routes.getRoute(parser.uri()).resetParams();
+                }
+                if (!routes.getRoute(parser.uri()).getParams().isEmpty()) {
+                    System.out.println("These are the params: " + routes.getRoute(parser.uri()).getParams());
+                     for (Map.Entry<String, String> param : routes.getRoute(parser.uri()).getParams().entrySet()) {
+                        content += param.getKey() + "=" + param.getValue() + StringModifier.EOL;
+                    }
+                    return content;
+                } else {
+                    return content;
+                }
+
             default:
                 return "";
         }

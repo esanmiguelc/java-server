@@ -15,7 +15,7 @@ public class Route {
         this.path = path;
         this.auth = auth;
         this.methods = methods;
-        this.currentParams = new HashMap<>();
+        currentParams = new HashMap<>();
     }
 
     public String getPath() {
@@ -30,11 +30,16 @@ public class Route {
         return methods;
     }
 
+
     public Map<String, String> getParams() {
         return currentParams;
     }
 
     public void setCurrentParams(Map<String, String> currentParams) {
         this.currentParams = currentParams;
+    }
+
+    public void resetParams() {
+        currentParams = new HashMap<>();
     }
 }
