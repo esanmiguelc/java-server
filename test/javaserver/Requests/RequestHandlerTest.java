@@ -1,6 +1,8 @@
 package javaserver.Requests;
 
+import javaserver.Responses.HttpResponseBuilder;
 import javaserver.Routes.RoutesRegistrar;
+import javaserver.StringModifier;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +17,8 @@ public class RequestHandlerTest {
         RoutesRegistrar.getInstance().registerRoute("/", false);
         RoutesRegistrar.getInstance().registerRoute("/logs", true);
         RoutesRegistrar.getInstance().registerRoute("/method_options", true, "GET", "POST", "OPTIONS");
+        RoutesRegistrar.getInstance().registerRoute("/form", false);
+
     }
 
     @Test
@@ -56,7 +60,7 @@ public class RequestHandlerTest {
     public void testReturnsAllowHeaderWithMethods() {
         HttpRequestParser parser = new HttpRequestParser("OPTIONS /method_options HTTP/1.1");
         RequestHandler handler = new RequestHandler(parser);
-        assertThat(handler.availableMethods(), is(equalTo("Allow: GET,POST,OPTIONS\r\n")));
+        assertThat(handler.availableMethods(), is(equalTo("Allow: GET,POST,OPTIONS" + StringModifier.EOL)));
     }
 
     @Test
@@ -65,6 +69,28 @@ public class RequestHandlerTest {
         HttpRequestParser parser = new HttpRequestParser("OPTIONS /logs HTTP/1.1");
         RequestHandler handler = new RequestHandler(parser);
         assertThat(handler.content(), is(equalTo(message)));
+    }
 
+    @Test
+    public void testNoParams() {
+        String request = "GET /form HTTP/1.1";
+        HttpRequestParser parser = new HttpRequestParser(request);
+        RequestHandler handler = new RequestHandler(parser);
+        assertThat(handler.content(), is(equalTo("")));
+    }
+
+    @Test
+    public void testDataParams() {
+        String postRequest = "POST /form HTTP/1.1" + StringModifier.EOL;
+        String data = "data=fatcat" + StringModifier.EOL;
+        postRequest += data;
+        HttpRequestParser postParser = new HttpRequestParser(postRequest);
+        RequestHandler postHandler = new RequestHandler(postParser);
+        postHandler.status();
+        String getRequest = "GET /form HTTP/1.1" + StringModifier.EOL;
+
+        HttpRequestParser getParser = new HttpRequestParser(getRequest);
+        RequestHandler getHandler = new RequestHandler(getParser);
+        assertThat(getHandler.content().contains(data), is(equalTo(true)));
     }
 }

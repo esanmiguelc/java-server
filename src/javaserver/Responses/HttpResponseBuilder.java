@@ -1,10 +1,14 @@
 package javaserver.Responses;
 
 import javaserver.Requests.RequestHandler;
+import javaserver.StringModifier;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class HttpResponseBuilder implements ResponseBuilder {
 
-    private static final String EOL = "\r\n";
+    
     public static final String SERVER_NAME = "Server: Emmanuel's Java Server/1.0";
     public static final String CONTENT_TYPE_TEXT_HTML = "Content-Type: text/html";
     public static final String HTTP_VERSION = "HTTP/1.1";
@@ -18,13 +22,16 @@ public class HttpResponseBuilder implements ResponseBuilder {
 
     @Override
     public String statusLine() {
-        response += HTTP_VERSION + " " + requestHandler.status() + EOL;
-        response += SERVER_NAME + EOL;
-        response += CONTENT_TYPE_TEXT_HTML + EOL;
-        response += TYPE_HEADER + " " + requestHandler.httpMethod() + EOL;
-        response += requestHandler.availableMethods() + EOL;
-        response += EOL;
-        response += requestHandler.content() + EOL;
+        List<String> lines = Arrays.asList(HTTP_VERSION + " " + requestHandler.status(),
+                SERVER_NAME,
+                CONTENT_TYPE_TEXT_HTML,
+                TYPE_HEADER + " " + requestHandler.httpMethod(),
+                requestHandler.availableMethods(),
+                requestHandler.content()
+        );
+        lines.stream()
+                .forEach((line) -> response += line + StringModifier.EOL);
+
         return response;
     }
 }

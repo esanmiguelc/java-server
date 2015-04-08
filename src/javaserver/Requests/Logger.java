@@ -1,5 +1,7 @@
 package javaserver.Requests;
 
+import javaserver.StringModifier;
+
 public class Logger {
 
     private String string = "";
@@ -9,6 +11,6 @@ public class Logger {
     }
 
     public void addLog(String request) {
-        string += request + "\r\n";
+        string += request + StringModifier.EOL;
     }
 }

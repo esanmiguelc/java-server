@@ -28,10 +28,12 @@ public class ConnectionHandler extends Thread {
         try {
             String requestString = "";
 
-            while (reader.ready() || requestString.length() == 0)
+            while (reader.ready() || requestString.length() == 0) {
                 requestString += (char) reader.read();
+            }
 
             System.out.println(requestString);
+            System.out.println("");
             HttpRequestParser requestParser = new HttpRequestParser(requestString);
             logger.addLog(requestParser.statusCode());
             RequestHandler requestHandler = new RequestHandler(requestParser, logger);

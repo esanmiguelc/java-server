@@ -66,4 +66,16 @@ public class HttpRequestParser {
     public boolean containsHeader(String key) {
         return headers.containsKey(key);
     }
+
+    public Map<String, String> params() {
+        List<String> params = request.stream()
+                .filter((line) -> line.matches("\\w+=\\w+"))
+                .collect(Collectors.toList());
+        HashMap<String, String> parsed = new HashMap<>();
+        for (String param : params) {
+            String[] split = param.split("=");
+            parsed.put(split[0], split[1]);
+        }
+        return parsed;
+    }
 }

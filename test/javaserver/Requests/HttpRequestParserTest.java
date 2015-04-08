@@ -1,6 +1,10 @@
 package javaserver.Requests;
 
+import javaserver.StringModifier;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -39,7 +43,7 @@ public class HttpRequestParserTest {
     @Test
     public void testGetsTheURIRouteWithPath() {
         String uri = "/foobar";
-        String request = "GET /foobar HTTP/1.1 \r\n";
+        String request = "GET /foobar HTTP/1.1" + StringModifier.EOL;
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertEquals(uri, requestParser.uri());
@@ -56,7 +60,7 @@ public class HttpRequestParserTest {
     @Test
     public void testRequestHeaders() {
         String host = "localhost:5000";
-        request += "Host: " + host + "\r\n";
+        request += "Host: " + host + StringModifier.EOL;
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertEquals(host, requestParser.getHeader("Host"));
@@ -71,9 +75,28 @@ public class HttpRequestParserTest {
     @Test
     public void testContainsHeader() {
         String host = "localhost:5000";
-        request += "Host: " + host + "\r\n";
+        request += "Host: " + host + StringModifier.EOL;
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertThat(requestParser.containsHeader("Host"), is(equalTo(true)));
+    }
+
+    @Test
+    public void testDoesntHaveParams() {
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.params().isEmpty(), is(equalTo(true)));
+    }
+
+    @Test
+    public void testParsesParams() {
+        Map<String, String> parameters = new HashMap<>();
+        String paramKey = "data";
+        parameters.put(paramKey, "fatcat");
+        request += StringModifier.EOL;
+        request += paramKey + "=" + parameters.get(paramKey);
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.params(), is(equalTo(parameters)));
     }
 }
