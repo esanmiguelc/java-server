@@ -1,7 +1,6 @@
 package javaserver.Requests;
 
 import javaserver.Responses.GetResponder;
-import javaserver.Responses.Responder;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 import javaserver.StringModifier;
@@ -70,6 +69,15 @@ public class RequestHandler {
             case UNAUTHORIZED:
                 return "Authentication required";
             case OK:
+                switch (request.httpMethod()) {
+                    case "DELETE":
+                        route.resetParams();
+                        break;
+                    case "GET":
+                        return new GetResponder(route, logger).content();
+                    default:
+                        return "";
+                }
                 if(request.httpMethod().equals("DELETE")) {
                     route.resetParams();
                 }
@@ -80,9 +88,6 @@ public class RequestHandler {
         }
     }
 
-    private Responder ResponderFactory() {
-        return new GetResponder(route,logger);
-    }
     private boolean isAuthenticated() {
         return request.getHeader("Authorization").equals(ENCRYPTED);
     }
