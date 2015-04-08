@@ -1,6 +1,7 @@
 package javaserver.Routes;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class Route {
         this.path = path;
         this.auth = auth;
         this.methods = methods;
-        currentParams = new HashMap<>();
+        currentParams = new LinkedHashMap<>();
     }
 
     public String getPath() {
@@ -40,6 +41,6 @@ public class Route {
     }
 
     public void resetParams() {
-        currentParams = new HashMap<>();
+        currentParams = new LinkedHashMap<>();
     }
 }
