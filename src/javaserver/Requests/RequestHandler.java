@@ -81,7 +81,6 @@ public class RequestHandler {
                     routes.getRoute(parser.uri()).resetParams();
                 }
                 if (!routes.getRoute(parser.uri()).getParams().isEmpty()) {
-                    System.out.println("These are the params: " + routes.getRoute(parser.uri()).getParams());
                      for (Map.Entry<String, String> param : routes.getRoute(parser.uri()).getParams().entrySet()) {
                         content += param.getKey() + "=" + param.getValue() + StringModifier.EOL;
                     }

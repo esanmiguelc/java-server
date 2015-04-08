@@ -87,12 +87,10 @@ public class RequestHandlerTest {
         HttpRequestParser postParser = new HttpRequestParser(postRequest);
         RequestHandler postHandler = new RequestHandler(postParser);
         postHandler.status();
-        System.out.println(RoutesRegistrar.getInstance().getRoute("/form"));
         String getRequest = "GET /form HTTP/1.1" + StringModifier.EOL;
 
         HttpRequestParser getParser = new HttpRequestParser(getRequest);
         RequestHandler getHandler = new RequestHandler(getParser);
-        System.out.println(new HttpResponseBuilder(getHandler).statusLine());
         assertThat(getHandler.content().contains(data), is(equalTo(true)));
     }
 }
