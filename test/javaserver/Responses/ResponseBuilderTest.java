@@ -1,7 +1,8 @@
 package javaserver.Responses;
 
 import javaserver.Requests.HttpRequestParser;
-import javaserver.Requests.RequestHandler;
+import javaserver.Requests.Request;
+import javaserver.Requests.TrafficCop;
 import javaserver.Routes.RoutesRegistrar;
 import javaserver.StringModifier;
 import org.junit.Test;
@@ -14,15 +15,15 @@ public class ResponseBuilderTest {
 
     @Test
     public void testReturns200ForAvailableRoute() throws Exception {
-        RequestHandler requestHandler = new RequestHandler(new HttpRequestParser("GET / HTTP/1.1 \r\n"));
-        ResponseBuilder handler = new HttpResponseBuilder(requestHandler);
+        TrafficCop trafficCop = new TrafficCop(new HttpRequestParser("GET / HTTP/1.1 \r\n").createRequest());
+        ResponseBuilder handler = new HttpResponseBuilder(trafficCop);
         assertThat(handler.statusLine().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
 
     @Test
     public void testReturns404ForUnavailableRoute() throws Exception {
-        HttpRequestParser requestParser = new HttpRequestParser("GET /foobar HTTP/1.1 \r\n");
-        ResponseBuilder handler = new HttpResponseBuilder(new RequestHandler(requestParser));
+        Request requestObject = new HttpRequestParser("GET /foobar HTTP/1.1 \r\n").createRequest();
+        ResponseBuilder handler = new HttpResponseBuilder(new TrafficCop(requestObject));
         assertThat(handler.statusLine().contains("HTTP/1.1 404 Not Found"), is(equalTo(true)));
     }
 
@@ -31,8 +32,8 @@ public class ResponseBuilderTest {
     public void testLogsShouldBeUnauthorized() throws Exception {
         String route = "/logs";
         RoutesRegistrar.getInstance().registerRoute(route, true);
-        HttpRequestParser requestParser = new HttpRequestParser("GET " + route + " HTTP/1.1");
-        ResponseBuilder handler = new HttpResponseBuilder(new RequestHandler(requestParser));
+        Request requestObject = new HttpRequestParser("GET " + route + " HTTP/1.1").createRequest();
+        ResponseBuilder handler = new HttpResponseBuilder(new TrafficCop(requestObject));
         assertThat(handler.statusLine().contains("HTTP/1.1 401 Unauthorized"), is(equalTo(true)));
     }
 
@@ -42,8 +43,8 @@ public class ResponseBuilderTest {
         RoutesRegistrar.getInstance().registerRoute(route, true);
         String request = "GET " + route + " HTTP/1.1" + StringModifier.EOL;
         request += "Authorization: Basic YWRtaW46aHVudGVyMg==" + StringModifier.EOL;
-        HttpRequestParser requestParser = new HttpRequestParser(request);
-        ResponseBuilder handler = new HttpResponseBuilder(new RequestHandler(requestParser));
+        Request requestObject = new HttpRequestParser(request).createRequest();
+        ResponseBuilder handler = new HttpResponseBuilder(new TrafficCop(requestObject));
         assertThat(handler.statusLine().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
 }

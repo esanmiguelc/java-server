@@ -12,12 +12,10 @@ public class HttpRequestParser {
     public static final int URI_LOC = 1;
     public static final int HTTP_LOC = 2;
     private final List<String> request;
-    private final Map<String, String> headers;
 
 
     public HttpRequestParser(String request) {
-        this.request = requestList(request);
-        this.headers = parseHeaders();
+        this.request = splitRequest(request);
     }
 
     public String httpMethod() {
@@ -32,15 +30,7 @@ public class HttpRequestParser {
         return splitStatusLine()[HTTP_LOC];
     }
 
-    public String statusCode() {
-        return httpMethod() + " " + uri() + " " + protocol();
-    }
-
-    public String getHeader(String key) {
-        return headers.get(key);
-    }
-
-    private List<String> requestList(String request) {
+    private List<String> splitRequest(String request) {
         return Arrays.asList(request.split("\n")).stream()
                 .map((string) -> string.replaceAll("[\n\r]+", ""))
                 .collect(Collectors.toList());
@@ -63,10 +53,6 @@ public class HttpRequestParser {
         return parsed;
     }
 
-    public boolean containsHeader(String key) {
-        return headers.containsKey(key);
-    }
-
     public Map<String, String> params() {
         List<String> params = request.stream()
                 .filter((line) -> line.matches("\\w+=\\w+"))
@@ -77,5 +63,9 @@ public class HttpRequestParser {
             parsed.put(split[0], split[1]);
         }
         return parsed;
+    }
+
+    public Request createRequest() {
+        return new Request(httpMethod(),uri(),protocol(), parseHeaders(), params());
     }
 }
