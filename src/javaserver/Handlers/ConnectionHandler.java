@@ -2,8 +2,10 @@ package javaserver.Handlers;
 
 import javaserver.Requests.HttpRequestParser;
 import javaserver.Requests.Logger;
-import javaserver.Requests.RequestHandler;
+import javaserver.Requests.Request;
+import javaserver.Requests.TrafficCop;
 import javaserver.Responses.HttpResponseBuilder;
+import javaserver.Responses.Responders.Responder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -34,12 +36,12 @@ public class ConnectionHandler extends Thread {
 
             System.out.println(requestString);
             System.out.println("");
-            HttpRequestParser requestParser = new HttpRequestParser(requestString);
-            logger.addLog(requestParser.statusCode());
-            RequestHandler requestHandler = new RequestHandler(requestParser, logger);
-            HttpResponseBuilder responseHandler = new HttpResponseBuilder(requestHandler);
+            Request request = new HttpRequestParser(requestString).createRequest();
+            logger.addLog(request.statusCode());
+            Responder responder = new TrafficCop(request, logger).delegate();
+            HttpResponseBuilder responseBuilder = new HttpResponseBuilder(responder);
 
-            writer.write(responseHandler.statusLine().toCharArray());
+            writer.write(responseBuilder.response().toCharArray());
             writer.close();
             reader.close();
             socket.close();

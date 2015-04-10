@@ -1,4 +1,4 @@
-package javaserver.Responses;
+package javaserver.Responses.Responders;
 
 import javaserver.Requests.Logger;
 import javaserver.Routes.Route;
@@ -21,7 +21,7 @@ public class GetResponderTest {
             put("data", "fatcat");
         }});
         GetResponder responder = new GetResponder(route, new Logger());
-        assertThat(responder.content(), is(equalTo("data=fatcat" + StringModifier.EOL)));
+        assertThat(responder.contentBody(), is(equalTo("data=fatcat" + StringModifier.EOL)));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class GetResponderTest {
         GetResponder responder = new GetResponder(route, new Logger());
         String data = "data=fatcat" + StringModifier.EOL;
         data += "other=data" + StringModifier.EOL;
-        assertThat(responder.content(), is(equalTo(data)));
+        assertThat(responder.contentBody(), is(equalTo(data)));
     }
 
     @Test
@@ -44,6 +44,6 @@ public class GetResponderTest {
         logger.addLog("GET /logs HTTP/1.1");
         GetResponder responder = new GetResponder(route, logger);
         String data = "GET /logs HTTP/1.1" + StringModifier.EOL;
-        assertThat(responder.content(), is(equalTo(data)));
+        assertThat(responder.contentBody(), is(equalTo(data)));
     }
 }
