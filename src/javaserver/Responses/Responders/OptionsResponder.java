@@ -1,25 +1,35 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Routes.Route;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class OptionsResponder implements Responder {
+
+    private Route route;
+
+    public OptionsResponder(Route route) {
+        this.route = route;
+    }
+
     @Override
     public String contentBody() {
-        return null;
+        return "Allow: " + String.join(",", route.getMethods());
     }
 
     @Override
     public String statusCode() {
-        return null;
+        return "200 OK";
     }
 
     @Override
     public String httpMethod() {
-        return null;
+        return "OPTIONS";
     }
 
     @Override
     public List<String> additionalHeaders() {
-        return null;
+        return Arrays.asList(contentBody());
     }
 }

@@ -1,7 +1,6 @@
-package javaserver.Responses;
+package javaserver.Responses.Responders;
 
 import javaserver.Requests.Logger;
-import javaserver.Responses.Responders.GetResponder;
 import javaserver.Routes.Route;
 import javaserver.StringModifier;
 import org.junit.Test;

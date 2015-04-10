@@ -1,25 +1,26 @@
 package javaserver.Responses.Responders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotFoundResponder implements Responder {
     @Override
     public String contentBody() {
-        return null;
+        return "No content found";
     }
 
     @Override
     public String statusCode() {
-        return null;
+        return "404 Not Found";
     }
 
     @Override
     public String httpMethod() {
-        return null;
+        return "GET";
     }
 
     @Override
     public List<String> additionalHeaders() {
-        return null;
+        return new ArrayList<>();
     }
 }

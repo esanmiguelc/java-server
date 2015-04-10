@@ -20,7 +20,7 @@ public class Request {
     }
 
     public String statusCode() {
-        return null;
+        return getHttpMethod() + " " + getUri() + " " + getProtocol();
     }
 
     public String getHttpMethod() {

@@ -1,25 +1,26 @@
 package javaserver.Responses.Responders;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UnauthorizedResponder implements Responder {
     @Override
     public String contentBody() {
-        return null;
+        return "Authentication required";
     }
 
     @Override
     public String statusCode() {
-        return null;
+        return "401 Unauthorized";
     }
 
     @Override
     public String httpMethod() {
-        return null;
+        return "GET";
     }
 
     @Override
     public List<String> additionalHeaders() {
-        return null;
+        return new ArrayList<>();
     }
 }

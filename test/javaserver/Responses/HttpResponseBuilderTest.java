@@ -21,6 +21,7 @@ public class HttpResponseBuilderTest {
         response += "Content-Type: text/html"+ StringModifier.EOL;
         response += "Request Type: GET"+ StringModifier.EOL;
         response += StringModifier.EOL;
+        response += StringModifier.EOL;
         Route route = new Route("/", false, Arrays.asList("GET"));
         Responder responder = new GetResponder(route, new Logger());
         HttpResponseBuilder builder = new HttpResponseBuilder(responder);
