@@ -1,6 +1,7 @@
 package javaserver.Responses;
 
 import javaserver.Requests.Logger;
+import javaserver.Requests.MockFile;
 import javaserver.Responses.Responders.GetResponder;
 import javaserver.Responses.Responders.Responder;
 import javaserver.Routes.Route;
@@ -18,9 +19,8 @@ public class HttpResponseBuilderTest {
     public void testReturnsTheCorrectResponseHeadersForGet() {
         String response = "HTTP/1.1 200 OK" + StringModifier.EOL;
         response += "Server: Emmanuel's Java Server/1.0"+ StringModifier.EOL;
-        response += "Content-Type: text/html"+ StringModifier.EOL;
         response += "Request Type: GET"+ StringModifier.EOL;
-        response += StringModifier.EOL;
+        response += "Content-Type: text/html"+ StringModifier.EOL;
         response += StringModifier.EOL;
         Route route = new Route("/", false, Arrays.asList("GET"));
         Responder responder = new GetResponder(route, new Logger());

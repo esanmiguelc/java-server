@@ -1,6 +1,7 @@
 reated by https://www.gitignore.io
 
 
+/public
 deploy_server.sh
 server_check.sh
 ## Intellij ##

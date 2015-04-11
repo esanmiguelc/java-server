@@ -1,5 +1,6 @@
 package javaserver.Requests;
 
+import javaserver.FileReader;
 import javaserver.Responses.Responders.*;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
@@ -12,41 +13,44 @@ public class TrafficCop {
 
     private Request request;
     private Logger logger;
+    private FileReader file;
     private Route route;
 
-    public TrafficCop(Request request) {
-        this.request = request;
-        this.logger = new Logger();
-        this.route = RoutesRegistrar.getInstance().getRoute(request.getUri());
-    }
-
-    public TrafficCop(Request request, Logger logger) {
+    public TrafficCop(Request request, Logger logger, FileReader file) {
         this.request = request;
         this.logger = logger;
+        this.file = file;
         this.route = RoutesRegistrar.getInstance().getRoute(request.getUri());
     }
 
     public Responder delegate() {
-        if (!containsRoute()) {
-            return new NotFoundResponder();
-        }
-        if (route.isSecured()) {
-            if (!isAuthenticated()) {
-                return new UnauthorizedResponder();
+        if (containsRoute()) {
+            if (route.isSecured()) {
+                if (!isAuthenticated()) {
+                    return new UnauthorizedResponder();
+                }
+            }
+            switch (request.getHttpMethod()) {
+                case "POST":
+                    return new PostResponder(route, request.getParams());
+                case "PUT":
+                    return new PostResponder(route, request.getParams());
+                case "OPTIONS":
+                    return new OptionsResponder(route);
+                case "DELETE":
+                    return new DeleteResponder(route);
+                default:
+                    return new GetResponder(route, logger);
             }
         }
-        switch (request.getHttpMethod()) {
-            case "POST":
-                return new PostResponder(route, request.getParams());
-            case "PUT":
-                return new PostResponder(route, request.getParams());
-            case "OPTIONS":
-                return new OptionsResponder(route);
-            case "DELETE":
-                return new DeleteResponder(route);
-            default:
-                return new GetResponder(route, logger);
+        if (containsFile()) {
+            return new FileResponder(file);
         }
+        return new NotFoundResponder();
+    }
+
+    private boolean containsFile() {
+        return file.exists();
     }
 
     private boolean containsRoute() {
@@ -61,3 +65,7 @@ public class TrafficCop {
         }
     }
 }
+
+// if (isValidRoute) {
+// if (isValidFile)
+// else notfound

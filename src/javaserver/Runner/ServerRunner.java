@@ -29,7 +29,7 @@ public class ServerRunner {
         while(true) {
             Socket socket = serverSocket.accept();
 
-            ConnectionHandler handler = new ConnectionHandler(socket, logger);
+            ConnectionHandler handler = new ConnectionHandler(socket, logger, config.getDirectory());
             handler.start();
         }
     }
