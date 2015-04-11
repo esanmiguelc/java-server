@@ -1,9 +1,6 @@
 package javaserver.Responses.Responders;
 
 import javaserver.FileReader;
-import javaserver.Requests.Logger;
-import javaserver.Responses.Responders.Responder;
-import javaserver.Routes.Route;
 
 import java.util.Arrays;
 import java.util.List;

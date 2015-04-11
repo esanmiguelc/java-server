@@ -1,7 +1,6 @@
 package javaserver.Responses;
 
 import javaserver.Requests.Logger;
-import javaserver.Requests.MockFile;
 import javaserver.Responses.Responders.GetResponder;
 import javaserver.Responses.Responders.Responder;
 import javaserver.Routes.Route;

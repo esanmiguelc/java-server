@@ -8,7 +8,9 @@ import javaserver.Requests.TrafficCop;
 import javaserver.Responses.HttpResponseBuilder;
 import javaserver.Responses.Responders.Responder;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
