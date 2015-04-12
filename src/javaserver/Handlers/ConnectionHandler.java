@@ -44,8 +44,6 @@ public class ConnectionHandler extends Thread {
             Request request = new HttpRequestParser(requestString).createRequest();
             logger.addLog(request.statusCode());
             Path path = Paths.get(publicPath + request.getUri());
-//            writer.print("HTTP/1.0 200 OK\r\n"+
-//                    "Content-type: image/jpeg\r\n\r\n");
             MyFileReader fileReader = new MyFileReader(path, writer);
             Responder responder = new TrafficCop(request, logger, fileReader).delegate();
             HttpResponseBuilder responseBuilder = new HttpResponseBuilder(responder);
