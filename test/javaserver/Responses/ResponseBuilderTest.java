@@ -17,7 +17,7 @@ public class ResponseBuilderTest {
         Request request = new HttpRequestParser("GET / HTTP/1.1 \r\n").createRequest();
         Responder getRequest = new TrafficCop(request, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getRequest);
-        assertThat(handler.response().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
+        assertThat(handler.headers().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
 
     @Test
@@ -25,7 +25,7 @@ public class ResponseBuilderTest {
         Request requestObject = new HttpRequestParser("GET /foobar HTTP/1.1 \r\n").createRequest();
         Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
-        assertThat(handler.response().contains("HTTP/1.1 404 Not Found"), is(equalTo(true)));
+        assertThat(handler.headers().contains("HTTP/1.1 404 Not Found"), is(equalTo(true)));
     }
 
 
@@ -36,7 +36,7 @@ public class ResponseBuilderTest {
         Request requestObject = new HttpRequestParser("GET " + route + " HTTP/1.1").createRequest();
         Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
-        assertThat(handler.response().contains("HTTP/1.1 401 Unauthorized"), is(equalTo(true)));
+        assertThat(handler.headers().contains("HTTP/1.1 401 Unauthorized"), is(equalTo(true)));
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ResponseBuilderTest {
         Request requestObject = new HttpRequestParser(request).createRequest();
         Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
-        assertThat(handler.response().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
+        assertThat(handler.headers().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
 
     @Test
@@ -59,6 +59,6 @@ public class ResponseBuilderTest {
         Request requestObject = new HttpRequestParser(request).createRequest();
         Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
-        assertThat(handler.response().contains("Allow: GET,POST,OPTIONS"), is(equalTo(true)));
+        assertThat(handler.responseBody().contains("Allow: GET,POST,OPTIONS"), is(equalTo(true)));
     }
 }

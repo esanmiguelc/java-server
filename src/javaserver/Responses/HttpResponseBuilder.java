@@ -22,17 +22,21 @@ public class HttpResponseBuilder implements ResponseBuilder {
     }
 
     @Override
-    public String response() {
+    public String headers() {
         List<String> lines = new ArrayList<>(Arrays.asList(HTTP_VERSION + " " + responder.statusCode(),
                 SERVER_NAME,
                 TYPE_HEADER + " " + responder.httpMethod()
-                ));
+        ));
         lines.addAll(responder.additionalHeaders().stream().collect(Collectors.toList()));
         lines.stream()
                 .forEach((line) -> response += line + StringModifier.EOL);
         response += StringModifier.EOL;
-        response += responder.contentBody();
         return response;
+    }
+
+    @Override
+    public String responseBody() {
+        return responder.contentBody();
     }
 }
 

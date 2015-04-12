@@ -48,7 +48,8 @@ public class ConnectionHandler extends Thread {
             Responder responder = new TrafficCop(request, logger, fileReader).delegate();
             HttpResponseBuilder responseBuilder = new HttpResponseBuilder(responder);
 
-            writer.print(responseBuilder.response());
+            writer.print(responseBuilder.headers());
+            writer.print(responseBuilder.responseBody());
             writer.close();
             reader.close();
             socket.close();

@@ -24,6 +24,6 @@ public class HttpResponseBuilderTest {
         Route route = new Route("/", false, Arrays.asList("GET"));
         Responder responder = new GetResponder(route, new Logger());
         HttpResponseBuilder builder = new HttpResponseBuilder(responder);
-        assertThat(builder.response(), is(equalTo(response)));
+        assertThat(builder.headers(), is(equalTo(response)));
     }
 }
