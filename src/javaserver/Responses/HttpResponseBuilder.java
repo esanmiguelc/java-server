@@ -13,7 +13,6 @@ public class HttpResponseBuilder implements ResponseBuilder {
     
     public static final String SERVER_NAME = "Server: Emmanuel's Java Server/1.0";
     public static final String HTTP_VERSION = "HTTP/1.1";
-    public static final String TYPE_HEADER = "Request Type:";
     private String response = "";
     private Responder responder;
 
@@ -24,8 +23,7 @@ public class HttpResponseBuilder implements ResponseBuilder {
     @Override
     public String headers() {
         List<String> lines = new ArrayList<>(Arrays.asList(HTTP_VERSION + " " + responder.statusCode(),
-                SERVER_NAME,
-                TYPE_HEADER + " " + responder.httpMethod()
+                SERVER_NAME
         ));
         lines.addAll(responder.additionalHeaders().stream().collect(Collectors.toList()));
         lines.stream()
