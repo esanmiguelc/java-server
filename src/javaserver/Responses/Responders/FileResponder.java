@@ -32,6 +32,6 @@ public class FileResponder implements Responder {
 
     @Override
     public List<String> additionalHeaders() {
-        return Arrays.asList("Content-Type: application/octet-stream");
+        return Arrays.asList("Content-Type: " + file.mimeType());
     }
 }

@@ -11,4 +11,6 @@ public interface FileReader {
     void process();
 
     boolean isDirectory();
+
+    String mimeType();
 }

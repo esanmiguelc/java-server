@@ -1,5 +1,6 @@
 package javaserver;
 
+import javax.activation.MimetypesFileTypeMap;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,6 +46,11 @@ public class MyFileReader implements FileReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String mimeType() {
+        MimetypesFileTypeMap mimetypesFileTypeMap = new MimetypesFileTypeMap();
+        return mimetypesFileTypeMap.getContentType(path.toFile());
     }
 
     @Override

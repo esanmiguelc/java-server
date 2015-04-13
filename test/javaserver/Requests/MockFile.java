@@ -31,4 +31,9 @@ public class MockFile implements FileReader {
     public boolean isDirectory() {
         return false;
     }
+
+    @Override
+    public String mimeType() {
+        return null;
+    }
 }
