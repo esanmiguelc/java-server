@@ -24,6 +24,7 @@ public class ServerConfig implements Configuration {
         String directoryCommand = "-d";
         if (args.contains(directoryCommand))
             return args.get(args.indexOf(directoryCommand) + 1);
-        return System.getProperty("user.dir") + "/cob_spec/public";
+        return "cob_spec/public";
+//        return System.getProperty("user.dir") + "/cob_spec/public";
     }
 }
