@@ -3,6 +3,7 @@ package javaserver;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 public class MyFileReader implements FileReader {
     private Path path;
@@ -16,6 +17,20 @@ public class MyFileReader implements FileReader {
     @Override
     public boolean exists() {
         return Files.exists(path);
+    }
+
+    @Override
+    public Stream<Path> getDirectoryContents() {
+        Stream<Path> list = null;
+        try {
+            list = Files.list(getDirectory());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    private Path getDirectory() {
+        return path.toAbsolutePath();
     }
 
     @Override

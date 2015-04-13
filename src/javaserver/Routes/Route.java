@@ -11,9 +11,20 @@ public class Route {
     private String path;
     private boolean auth;
     private List<String> methods;
+    private boolean root;
+
+    public Route(String path, boolean auth, List<String> methods, boolean root) {
+        this.path = path;
+        this.auth = auth;
+        this.methods = methods;
+        this.root = root;
+        currentParams = new LinkedHashMap<>();
+    }
+
     public Route(String path, boolean auth, List<String> methods) {
         this.path = path;
         this.auth = auth;
+        this.root = false;
         this.methods = methods;
         currentParams = new LinkedHashMap<>();
     }
@@ -28,6 +39,10 @@ public class Route {
 
     public List<String> getMethods() {
         return methods;
+    }
+
+    public boolean isRoot() {
+        return root;
     }
 
 
