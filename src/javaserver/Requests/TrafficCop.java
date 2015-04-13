@@ -61,14 +61,6 @@ public class TrafficCop {
     }
 
     private boolean isAuthenticated() {
-        if (request.containsHeader("Authorization")) {
-            return request.getHeader("Authorization").equals(ENCRYPTED);
-        } else {
-            return false;
-        }
+        return request.containsHeader("Authorization") && request.getHeader("Authorization").equals(ENCRYPTED);
     }
 }
-
-// if (isValidRoute) {
-// if (isValidFile)
-// else notfound
