@@ -1,6 +1,8 @@
 package javaserver.Responses.Responders;
 
+import javaserver.FileReader;
 import javaserver.Requests.Logger;
+import javaserver.Requests.MockFile;
 import javaserver.Routes.Route;
 import javaserver.StringModifier;
 import org.junit.Test;
@@ -20,6 +22,8 @@ public class GetResponderTest {
         route.setCurrentParams(new LinkedHashMap<String, String>() {{
             put("data", "fatcat");
         }});
+        MockFile file = new MockFile();
+        file.setFileAvailability(false);
         GetResponder responder = new GetResponder(route, new Logger());
         assertThat(responder.contentBody(), is(equalTo("data=fatcat" + StringModifier.EOL)));
     }
@@ -31,6 +35,8 @@ public class GetResponderTest {
             put("data", "fatcat");
             put("other", "data");
         }});
+
+        FileReader file = new MockFile();
         GetResponder responder = new GetResponder(route, new Logger());
         String data = "data=fatcat" + StringModifier.EOL;
         data += "other=data" + StringModifier.EOL;
@@ -42,6 +48,7 @@ public class GetResponderTest {
         Route route = new Route("/logs", false, new ArrayList<>());
         Logger logger = new Logger();
         logger.addLog("GET /logs HTTP/1.1");
+        MockFile file = new MockFile();
         GetResponder responder = new GetResponder(route, logger);
         String data = "GET /logs HTTP/1.1" + StringModifier.EOL;
         assertThat(responder.contentBody(), is(equalTo(data)));

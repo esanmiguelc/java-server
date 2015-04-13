@@ -1,5 +1,7 @@
 package javaserver.Responses;
 
 public interface ResponseBuilder {
-    String response() throws Exception;
+    String responseBody() throws Exception;
+
+    String headers();
 }

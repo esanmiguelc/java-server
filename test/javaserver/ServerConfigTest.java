@@ -37,7 +37,7 @@ public class ServerConfigTest {
     @Test
     public void testGetDefaultDirectory() {
         String[] args = new String[2];
-        String directory = System.getProperty("user.dir") + "/public";
+        String directory = System.getProperty("user.dir") + "/cob_spec/public";
         args[0] = "";
         args[1] = "";
         ServerConfig config = new ServerConfig(args);

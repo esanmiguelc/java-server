@@ -18,13 +18,12 @@ public class HttpResponseBuilderTest {
     public void testReturnsTheCorrectResponseHeadersForGet() {
         String response = "HTTP/1.1 200 OK" + StringModifier.EOL;
         response += "Server: Emmanuel's Java Server/1.0"+ StringModifier.EOL;
-        response += "Content-Type: text/html"+ StringModifier.EOL;
         response += "Request Type: GET"+ StringModifier.EOL;
-        response += StringModifier.EOL;
+        response += "Content-Type: text/html"+ StringModifier.EOL;
         response += StringModifier.EOL;
         Route route = new Route("/", false, Arrays.asList("GET"));
         Responder responder = new GetResponder(route, new Logger());
         HttpResponseBuilder builder = new HttpResponseBuilder(responder);
-        assertThat(builder.response(), is(equalTo(response)));
+        assertThat(builder.headers(), is(equalTo(response)));
     }
 }

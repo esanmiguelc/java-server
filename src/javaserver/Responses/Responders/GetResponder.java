@@ -4,10 +4,12 @@ import javaserver.Requests.Logger;
 import javaserver.Routes.Route;
 import javaserver.StringModifier;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GetResponder implements Responder {
+
+    public static final String LOGS = "/logs";
     private Route route;
     private Logger logger;
     private String content = "";
@@ -19,7 +21,7 @@ public class GetResponder implements Responder {
 
     @Override
     public String contentBody() {
-        if(route.getPath().equals("/logs")) {
+        if(route.getPath().equals(LOGS)) {
             return logger.logs();
         }
 
@@ -43,6 +45,6 @@ public class GetResponder implements Responder {
 
     @Override
     public List<String> additionalHeaders() {
-        return new ArrayList<>();
+        return Arrays.asList("Content-Type: text/html");
     }
 }
