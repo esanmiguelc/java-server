@@ -32,6 +32,10 @@ public class RoutesRegistrar {
         routes.put(path, new Route(path, auth, Arrays.asList(methods)));
     }
 
+    public void registerRoute(String path, boolean auth, boolean root, String... methods) {
+        routes.put(path, new Route(path, auth, Arrays.asList(methods), root));
+    }
+
     public boolean isSecured(String path) {
         return routes.get(path).isSecured();
     }

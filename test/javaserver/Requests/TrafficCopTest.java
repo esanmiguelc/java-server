@@ -14,7 +14,7 @@ public class TrafficCopTest {
 
     @Before
     public void setUp() throws Exception {
-        RoutesRegistrar.getInstance().registerRoute("/", false);
+        RoutesRegistrar.getInstance().registerRoute("/", false, true);
         RoutesRegistrar.getInstance().registerRoute("/logs", true);
         RoutesRegistrar.getInstance().registerRoute("/method_options", false, "GET", "POST", "OPTIONS");
         RoutesRegistrar.getInstance().registerRoute("/form", false);
@@ -22,7 +22,7 @@ public class TrafficCopTest {
 
     @Test
     public void testReturnsTheCorrectResponderForGet() {
-        Request req = new HttpRequestParser("GET / HTTP/1.1").createRequest();
+        Request req = new HttpRequestParser("GET /method_options HTTP/1.1").createRequest();
         Responder responder = new TrafficCop(req, new Logger(), new MockFile()).delegate();
         assertThat(responder, is(instanceOf(GetResponder.class)));
     }
@@ -42,6 +42,14 @@ public class TrafficCopTest {
         file.setFileAvailability(true);
         Responder responder = new TrafficCop(req, new Logger(), file).delegate();
         assertThat(responder, is(instanceOf(FileResponder.class)));
+    }
+
+    @Test
+    public void testReturnsTheCorrectResponderForRoot() {
+        Request req = new HttpRequestParser("GET / HTTP/1.1").createRequest();
+        Responder responder = new TrafficCop(req, new Logger(), new MockFile()).delegate();
+        assertThat(responder, is(instanceOf(RootResponder.class)));
+
     }
 
     @Test

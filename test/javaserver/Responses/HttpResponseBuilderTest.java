@@ -18,7 +18,6 @@ public class HttpResponseBuilderTest {
     public void testReturnsTheCorrectResponseHeadersForGet() {
         String response = "HTTP/1.1 200 OK" + StringModifier.EOL;
         response += "Server: Emmanuel's Java Server/1.0"+ StringModifier.EOL;
-        response += "Request Type: GET"+ StringModifier.EOL;
         response += "Content-Type: text/html"+ StringModifier.EOL;
         response += StringModifier.EOL;
         Route route = new Route("/", false, Arrays.asList("GET"));

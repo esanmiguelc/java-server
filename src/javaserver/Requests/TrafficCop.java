@@ -25,6 +25,9 @@ public class TrafficCop {
 
     public Responder delegate() {
         if (containsRoute()) {
+            if (route.isRoot()) {
+                return new RootResponder(file);
+            }
             if (route.isSecured()) {
                 if (!isAuthenticated()) {
                     return new UnauthorizedResponder();
