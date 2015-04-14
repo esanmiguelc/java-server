@@ -32,7 +32,7 @@ public class ResponseBuilderTest {
     @Test
     public void testLogsShouldBeUnauthorized() throws Exception {
         String route = "/logs";
-        RoutesRegistrar.getInstance().registerRoute(route, true);
+        RoutesRegistrar.getInstance().registerRoute(route, true, "GET");
         Request requestObject = new HttpRequestParser("GET " + route + " HTTP/1.1").createRequest();
         Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
@@ -42,7 +42,7 @@ public class ResponseBuilderTest {
     @Test
     public void testLogsShouldBeAuthorized() throws Exception {
         String route = "/logs";
-        RoutesRegistrar.getInstance().registerRoute(route, true);
+        RoutesRegistrar.getInstance().registerRoute(route, true, "GET");
         String request = "GET " + route + " HTTP/1.1" + StringModifier.EOL;
         request += "Authorization: Basic YWRtaW46aHVudGVyMg==" + StringModifier.EOL;
         Request requestObject = new HttpRequestParser(request).createRequest();

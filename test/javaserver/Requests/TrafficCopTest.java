@@ -14,10 +14,10 @@ public class TrafficCopTest {
 
     @Before
     public void setUp() throws Exception {
-        RoutesRegistrar.getInstance().registerRoute("/", false, true);
-        RoutesRegistrar.getInstance().registerRoute("/logs", true);
+        RoutesRegistrar.getInstance().registerRoute("/", false, true, "GET");
+        RoutesRegistrar.getInstance().registerRoute("/logs", true, "GET");
         RoutesRegistrar.getInstance().registerRoute("/method_options", false, "GET", "POST", "OPTIONS");
-        RoutesRegistrar.getInstance().registerRoute("/form", false);
+        RoutesRegistrar.getInstance().registerRoute("/form", false, "DELETE", "POST");
     }
 
     @Test
@@ -25,6 +25,13 @@ public class TrafficCopTest {
         Request req = new HttpRequestParser("GET /method_options HTTP/1.1").createRequest();
         Responder responder = new TrafficCop(req, new Logger(), new MockFile()).delegate();
         assertThat(responder, is(instanceOf(GetResponder.class)));
+    }
+
+    @Test
+    public void testMethodNotAllowedWhenRouteDoesntHaveMethod() {
+        Request req = new HttpRequestParser("POST /logs HTTP/1.1").createRequest();
+        Responder responder = new TrafficCop(req, new Logger(), new MockFile()).delegate();
+        assertThat(responder, is(instanceOf(MethodNotAllowedResponder.class)));
     }
 
     @Test
@@ -50,6 +57,15 @@ public class TrafficCopTest {
         Responder responder = new TrafficCop(req, new Logger(), new MockFile()).delegate();
         assertThat(responder, is(instanceOf(RootResponder.class)));
 
+    }
+
+    @Test
+    public void testFileOnlyRespondsToGet() {
+        Request req = new HttpRequestParser("POST /file1 HTTP/1.1").createRequest();
+        MockFile file = new MockFile();
+        file.setFileAvailability(true);
+        Responder responder = new TrafficCop(req, new Logger(), file).delegate();
+        assertThat(responder, is(instanceOf(MethodNotAllowedResponder.class)));
     }
 
     @Test
