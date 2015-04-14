@@ -25,31 +25,39 @@ public class TrafficCop {
 
     public Responder delegate() {
         if (containsRoute()) {
-            if (route.isRoot()) {
-                return new RootResponder(file);
-            }
-            if (route.isSecured()) {
-                if (!isAuthenticated()) {
-                    return new UnauthorizedResponder();
+            if (!route.hasMethod(request.getHttpMethod())) {
+                return new MethodNotAllowedResponder();
+            } else {
+                if (route.isRoot()) {
+                    return new RootResponder(file);
                 }
+                if (route.isSecured()) {
+                    if (!isAuthenticated()) {
+                        return new UnauthorizedResponder();
+                    }
+                }
+                return getResponderValidRoute();
             }
-            switch (request.getHttpMethod()) {
-                case "POST":
-                    return new PostResponder(route, request.getParams());
-                case "PUT":
-                    return new PostResponder(route, request.getParams());
-                case "OPTIONS":
-                    return new OptionsResponder(route);
-                case "DELETE":
-                    return new DeleteResponder(route);
-                default:
-                    return new GetResponder(route, logger);
-            }
-        }
-        if (containsFile()) {
+        } else if (containsFile()) {
             return new FileResponder(file);
+        } else {
+            return new NotFoundResponder();
         }
-        return new NotFoundResponder();
+    }
+
+    private Responder getResponderValidRoute() {
+        switch (request.getHttpMethod()) {
+            case "POST":
+                return new PostResponder(route, request.getParams());
+            case "PUT":
+                return new PostResponder(route, request.getParams());
+            case "OPTIONS":
+                return new OptionsResponder(route);
+            case "DELETE":
+                return new DeleteResponder(route);
+            default:
+                return new GetResponder(route, logger);
+        }
     }
 
     private boolean containsFile() {

@@ -45,7 +45,6 @@ public class Route {
         return root;
     }
 
-
     public Map<String, String> getParams() {
         return currentParams;
     }
@@ -56,5 +55,9 @@ public class Route {
 
     public void resetParams() {
         currentParams = new LinkedHashMap<>();
+    }
+
+    public boolean hasMethod(String httpMethod) {
+        return methods.contains(httpMethod);
     }
 }
