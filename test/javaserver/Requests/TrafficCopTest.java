@@ -60,6 +60,15 @@ public class TrafficCopTest {
     }
 
     @Test
+    public void testFileOnlyRespondsToGet() {
+        Request req = new HttpRequestParser("POST /file1 HTTP/1.1").createRequest();
+        MockFile file = new MockFile();
+        file.setFileAvailability(true);
+        Responder responder = new TrafficCop(req, new Logger(), file).delegate();
+        assertThat(responder, is(instanceOf(MethodNotAllowedResponder.class)));
+    }
+
+    @Test
     public void testReturnsTheCorrectResponderForPost() {
         Request req = new HttpRequestParser("POST /form HTTP/1.1").createRequest();
         Responder responder = new TrafficCop(req, new Logger(), new MockFile()).delegate();

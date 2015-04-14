@@ -36,16 +36,24 @@ public class TrafficCop {
                         return new UnauthorizedResponder();
                     }
                 }
-                return getResponderValidRoute();
+                return validRouteResponderFactory();
             }
         } else if (containsFile()) {
-            return new FileResponder(file);
+            return fileResponderFactory();
         } else {
             return new NotFoundResponder();
         }
     }
 
-    private Responder getResponderValidRoute() {
+    private Responder fileResponderFactory() {
+        if (request.getHttpMethod().equals("GET")) {
+            return new FileResponder(file);
+        } else {
+            return new MethodNotAllowedResponder();
+        }
+    }
+
+    private Responder validRouteResponderFactory() {
         switch (request.getHttpMethod()) {
             case "POST":
                 return new PostResponder(route, request.getParams());
