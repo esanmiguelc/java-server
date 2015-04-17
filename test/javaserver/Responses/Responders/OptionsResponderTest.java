@@ -1,9 +1,12 @@
 package javaserver.Responses.Responders;
 
 import javaserver.Routes.Route;
+import javaserver.TestHelper;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -11,7 +14,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class OptionsResponderTest {
 
-    private final Route route = new Route("/", false, Arrays.asList("GET", "POST", "OPTIONS"));
+    private final Route route = TestHelper.createRoute("/", false, false, new LinkedHashMap<String, Responder>(){{
+        put("GET", new GetResponder());
+        put("POST", new PostResponder());
+        put("OPTIONS", new OptionsResponder());
+    }});
 
     @Test
     public void testReturnsAppropriateStatusCode() {

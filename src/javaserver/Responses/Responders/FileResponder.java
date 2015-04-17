@@ -1,6 +1,8 @@
 package javaserver.Responses.Responders;
 
 import javaserver.FileReader;
+import javaserver.Requests.Request;
+import javaserver.Routes.Route;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,5 +35,10 @@ public class FileResponder implements Responder {
     @Override
     public List<String> additionalHeaders() {
         return Arrays.asList("Content-Type: " + file.mimeType());
+    }
+
+    @Override
+    public Responder execute(Route route, Request request) {
+        return this;
     }
 }

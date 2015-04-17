@@ -11,12 +11,12 @@ public class TrafficCop {
 
     private final RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
-    private Request request;
+    private HttpRequest request;
     private Logger logger;
     private FileReader file;
     private Route route;
 
-    public TrafficCop(Request request, Logger logger, FileReader file) {
+    public TrafficCop(HttpRequest request, Logger logger, FileReader file) {
         this.request = request;
         this.logger = logger;
         this.file = file;
@@ -26,45 +26,43 @@ public class TrafficCop {
     public Responder delegate() {
         if (containsRoute()) {
             if (!route.hasMethod(request.getHttpMethod())) {
-                return new MethodNotAllowedResponder();
+                return new MethodNotAllowedResponder().execute(route,request);
             } else {
                 if (route.isRoot()) {
-                    return new RootResponder(file);
+                    return route.responder("GET").execute(route,request);
                 }
                 if (route.isSecured()) {
                     if (!isAuthenticated()) {
-                        return new UnauthorizedResponder();
+                        return new UnauthorizedResponder().execute(route,request);
                     }
+                } else {
+                    return route.responder(request.getHttpMethod()).execute(route, request);
                 }
                 return validRouteResponderFactory();
             }
         } else if (containsFile()) {
-            return fileResponderFactory();
+            return fileResponderFactory().execute(route,request);
         } else {
-            return new NotFoundResponder();
+            return new NotFoundResponder().execute(route,request);
         }
     }
 
     private Responder fileResponderFactory() {
-        if (request.getHttpMethod().equals("GET")) {
-            return new FileResponder(file);
-        } else {
-            return new MethodNotAllowedResponder();
-        }
+        return (request.getHttpMethod().equals("GET")) ? new FileResponder(file).execute(route,request) : new MethodNotAllowedResponder().execute(route,request);
     }
 
     private Responder validRouteResponderFactory() {
         switch (request.getHttpMethod()) {
             case "POST":
-                return new PostResponder(route, request.getParams());
+                return new PostResponder(route, request.getParams()).execute(route, request);
             case "PUT":
-                return new PostResponder(route, request.getParams());
+                return new PostResponder(route, request.getParams()).execute(route,request);
             case "OPTIONS":
-                return new OptionsResponder(route);
+                return new OptionsResponder(route).execute(route,request);
             case "DELETE":
-                return new DeleteResponder(route);
+                return new DeleteResponder().execute(route, request);
             default:
-                return new GetResponder(route, logger);
+                return new GetResponder(route, logger).execute(route, request);
         }
     }
 
@@ -80,3 +78,11 @@ public class TrafficCop {
         return request.containsHeader("Authorization") && request.getHeader("Authorization").equals(ENCRYPTED);
     }
 }
+
+//        {
+//          route => responder
+//        }
+
+// new_game = makes empty board
+// post take_turn makes a move on the board + passes the current state to server
+// get play returns the current state

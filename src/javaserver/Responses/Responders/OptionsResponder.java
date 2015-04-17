@@ -1,5 +1,6 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 
 import java.util.Arrays;
@@ -11,6 +12,10 @@ public class OptionsResponder implements Responder {
 
     public OptionsResponder(Route route) {
         this.route = route;
+    }
+
+    public OptionsResponder() {
+
     }
 
     @Override
@@ -31,5 +36,11 @@ public class OptionsResponder implements Responder {
     @Override
     public List<String> additionalHeaders() {
         return Arrays.asList(contentBody());
+    }
+
+    @Override
+    public Responder execute(Route route, Request request) {
+        this.route = route;
+        return this;
     }
 }

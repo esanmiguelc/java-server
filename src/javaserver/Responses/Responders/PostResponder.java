@@ -1,5 +1,6 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 
 import java.util.ArrayList;
@@ -14,6 +15,10 @@ public class PostResponder implements Responder {
         this.route = route;
         this.params = params;
         setParams();
+    }
+
+    public PostResponder() {
+
     }
 
     @Override
@@ -34,6 +39,11 @@ public class PostResponder implements Responder {
     @Override
     public List<String> additionalHeaders() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public Responder execute(Route route, Request request) {
+        return this;
     }
 
     private void setParams() {

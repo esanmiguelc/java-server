@@ -1,32 +1,43 @@
 package javaserver.Routes;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import javaserver.Responses.Responders.Responder;
+import javaserver.Responses.Responders.RootResponder;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Route {
 
+    private final Map<String, Responder> config;
     private Map<String, String> currentParams;
 
     private String path;
     private boolean auth;
-    private List<String> methods;
     private boolean root;
 
-    public Route(String path, boolean auth, List<String> methods, boolean root) {
+    public Route(String path, boolean auth, boolean root) {
         this.path = path;
         this.auth = auth;
-        this.methods = methods;
         this.root = root;
         currentParams = new LinkedHashMap<>();
+        config = null;
     }
 
-    public Route(String path, boolean auth, List<String> methods) {
+    public Route(String path, boolean auth) {
         this.path = path;
         this.auth = auth;
         this.root = false;
-        this.methods = methods;
+        this.config = null;
         currentParams = new LinkedHashMap<>();
+    }
+
+    public Route(String path, boolean auth, boolean root, Map<String, Responder> config) {
+        this.path = path;
+        this.auth = auth;
+        this.root = root;
+        this.config = config;
+        currentParams = new LinkedHashMap<>();
+
     }
 
     public String getPath() {
@@ -38,7 +49,7 @@ public class Route {
     }
 
     public List<String> getMethods() {
-        return methods;
+        return config.keySet().stream().collect(Collectors.toList());
     }
 
     public boolean isRoot() {
@@ -58,6 +69,18 @@ public class Route {
     }
 
     public boolean hasMethod(String httpMethod) {
-        return methods.contains(httpMethod);
+        return config.containsKey(httpMethod);
+    }
+
+    public boolean hasResponder(String method) {
+        return config.containsKey(method);
+    }
+
+    public Responder responder(String method) {
+        return config.get(method);
+    }
+
+    public boolean hasParams() {
+        return currentParams.isEmpty();
     }
 }

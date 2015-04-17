@@ -1,5 +1,9 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Requests.HttpRequest;
+import javaserver.Requests.Request;
+import javaserver.Routes.Route;
+
 import java.util.List;
 
 public interface Responder {
@@ -10,4 +14,6 @@ public interface Responder {
     String httpMethod();
 
     List<String> additionalHeaders();
+
+    Responder execute(Route route, Request request);
 }

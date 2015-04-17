@@ -15,6 +15,10 @@ public class MyFileReader implements FileReader {
         this.writer = writer;
     }
 
+    public MyFileReader() {
+
+    }
+
     @Override
     public boolean exists() {
         return Files.exists(path);

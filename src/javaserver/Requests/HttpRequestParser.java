@@ -42,15 +42,17 @@ public class HttpRequestParser {
 
     private HashMap<String, String> parseHeaders() {
         HashMap<String, String> parsed = new HashMap<>();
-        List<String> headers = request.stream()
-                .filter((line) -> line.matches("\\w+:\\s.+"))
-                .collect(Collectors.toList());
-        for(String header : headers) {
-            String headerKey = header.substring(0, header.indexOf(" ")).replaceAll("\\W", "");
-            String headerValue = header.substring(header.indexOf(" ") + 1);
-            parsed.put(headerKey, headerValue);
-        }
+        List<String> headers = filterHeaders();
+        headers.stream()
+                .map((header) -> header.split(":\\s"))
+                .forEach((header) -> parsed.put(header[0], header[1]));
         return parsed;
+    }
+
+    private List<String> filterHeaders() {
+        return request.stream()
+                    .filter((line) -> line.contains(": "))
+                    .collect(Collectors.toList());
     }
 
     public Map<String, String> params() {
@@ -65,7 +67,7 @@ public class HttpRequestParser {
         return parsed;
     }
 
-    public Request createRequest() {
-        return new Request(httpMethod(),uri(),protocol(), parseHeaders(), params());
+    public HttpRequest createRequest() {
+        return new HttpRequest(httpMethod(),uri(),protocol(), parseHeaders(), params());
     }
 }

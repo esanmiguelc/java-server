@@ -3,6 +3,7 @@ package javaserver.Requests;
 import javaserver.FileReader;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class MockFile implements FileReader {
@@ -22,7 +23,7 @@ public class MockFile implements FileReader {
     public Stream<Path> getDirectoryContents() {
         return null;
     }
-
+    
     @Override
     public void process() {
     }

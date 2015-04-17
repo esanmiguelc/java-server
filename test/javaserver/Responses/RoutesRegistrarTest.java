@@ -1,8 +1,12 @@
 package javaserver.Responses;
 
+import javaserver.Responses.Responders.Responder;
+import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -24,7 +28,8 @@ public class RoutesRegistrarTest {
 
     @Test
     public void testIsNotEmpty() {
-        routes.registerRoute("/", false);
+        routes.registerRoute(new Route("/", false, false, new HashMap<>()));
+
         assertThat(routes.routes().isEmpty(), is(equalTo(false)));
     }
 
@@ -37,21 +42,21 @@ public class RoutesRegistrarTest {
     @Test
     public void testContainsSpecificRoute() {
         String path = "/";
-        routes.registerRoute(path, false, "POST", "GET");
+        routes.registerRoute(new Route("/", false, false, new HashMap<>()));
         assertThat(routes.containsRoute(path), is(equalTo(true)));
     }
 
     @Test
     public void testFindRoute() {
         String path = "/";
-        routes.registerRoute(path, false, "POST", "GET");
+        routes.registerRoute(new Route("/", false, false, new HashMap<>()));
         assertThat(routes.containsRoute(path), is(equalTo(true)));
     }
 
     @Test
     public void testGetRoute() {
         String path = "/";
-        routes.registerRoute(path, false, "POST", "GET");
+        routes.registerRoute(new Route("/", false, false, new HashMap<>()));
         assertThat(routes.getRoute(path).getPath(), is(equalTo(path)));
     }
 }

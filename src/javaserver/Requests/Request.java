@@ -2,51 +2,20 @@ package javaserver.Requests;
 
 import java.util.Map;
 
-public class Request {
+public interface Request {
+    String statusCode();
 
-    private String httpMethod;
-    private String uri;
-    private String protocol;
-    private Map<String, String> headers;
-    private Map<String, String> params;
+    String getHttpMethod();
 
-    public Request(String httpMethod, String uri, String protocol, Map<String, String> headers, Map<String, String> params) {
-        this.httpMethod = httpMethod;
-        this.uri = uri;
-        this.protocol = protocol;
-        this.headers = headers;
-        this.params = params;
-    }
+    String getUri();
 
-    public String statusCode() {
-        return getHttpMethod() + " " + getUri() + " " + getProtocol();
-    }
+    String getProtocol();
 
-    public String getHttpMethod() {
-        return httpMethod;
-    }
+    Map<String, String> getHeaders();
 
-    public String getUri() {
-        return uri;
-    }
+    Map<String, String> getParams();
 
-    public String getProtocol() {
-        return protocol;
-    }
+    boolean containsHeader(String header);
 
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
-
-    public Map<String, String> getParams() {
-        return params;
-    }
-
-    public boolean containsHeader(String header) {
-        return headers.containsKey(header);
-    }
-
-    public String getHeader(String key) {
-        return headers.get(key);
-    }
+    String getHeader(String key);
 }

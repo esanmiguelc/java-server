@@ -1,5 +1,6 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 
 import java.util.ArrayList;
@@ -7,11 +8,7 @@ import java.util.List;
 
 public class DeleteResponder implements Responder {
 
-    private Route route;
-
-    public DeleteResponder(Route route) {
-        this.route = route;
-        deleteParams();
+    public DeleteResponder() {
     }
 
     @Override
@@ -34,7 +31,13 @@ public class DeleteResponder implements Responder {
         return new ArrayList<>();
     }
 
-    private void deleteParams() {
+    @Override
+    public Responder execute(Route route, Request request) {
+        deleteParams(route);
+        return this;
+    }
+
+    private void deleteParams(Route route) {
         route.resetParams();
     }
 }
