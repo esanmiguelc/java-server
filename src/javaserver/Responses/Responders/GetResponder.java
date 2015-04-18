@@ -1,6 +1,5 @@
 package javaserver.Responses.Responders;
 
-import javaserver.Requests.Logger;
 import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 import javaserver.StringModifier;
@@ -10,24 +9,13 @@ import java.util.List;
 
 public class GetResponder implements Responder {
 
-    private Logger logger;
-    private String content = "";
-    private Route route;
-
-    public GetResponder(Route route, Logger logger) {
-        this.route = route;
-        this.logger = logger;
-    }
+    private String content;
 
     public GetResponder() {
     }
 
     @Override
     public String contentBody() {
-        String LOGS = "/logs";
-        if(route.getPath().equals(LOGS)) {
-            return logger.logs();
-        }
         return content;
     }
 
@@ -48,8 +36,8 @@ public class GetResponder implements Responder {
 
     @Override
     public Responder execute(Route route, Request request) {
-        this.route = route;
-        if (!route.hasParams()) {
+        this.content = "";
+        if (route.hasParams()) {
             route.getParams().entrySet()
                     .stream()
                     .forEach((entry) -> content += entry.getKey() + "=" + entry.getValue() + StringModifier.EOL);

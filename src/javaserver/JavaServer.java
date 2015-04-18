@@ -7,9 +7,9 @@ import javaserver.config.ServerConfig;
 
 public class JavaServer {
     public static void main(String[] args) throws Exception {
-        ServerConfig config = new ServerConfig(args);
-        ServerRunner server = new ServerRunner(config);
         Logger logger = new Logger();
+        ServerConfig config = new ServerConfig(args);
+        ServerRunner server = new ServerRunner(config, logger);
         RoutesConfig.seedRoutes(config, logger);
 
         server.run();

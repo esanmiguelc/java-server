@@ -10,10 +10,12 @@ import java.net.Socket;
 public class ServerRunner {
 
     private ServerConfig config;
+    private Logger logger;
     private ServerSocket serverSocket;
 
-    public ServerRunner(ServerConfig config) {
+    public ServerRunner(ServerConfig config, Logger logger) {
         this.config = config;
+        this.logger = logger;
     }
 
     public void run() throws Exception {
@@ -25,7 +27,6 @@ public class ServerRunner {
     }
 
     private void acceptRequests() throws Exception {
-        Logger logger = new Logger();
         while(true) {
             Socket socket = serverSocket.accept();
 

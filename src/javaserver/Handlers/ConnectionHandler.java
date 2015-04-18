@@ -45,7 +45,7 @@ public class ConnectionHandler extends Thread {
             logger.addLog(request.statusCode());
             Path path = Paths.get(publicPath + request.getUri());
             MyFileReader fileReader = new MyFileReader(path, writer);
-            Responder responder = new ResponseHandler(request, logger, fileReader).delegate();
+            Responder responder = new ResponseHandler(request, fileReader).delegate();
             HttpResponseBuilder responseBuilder = new HttpResponseBuilder(responder);
 
             writer.print(responseBuilder.headers());

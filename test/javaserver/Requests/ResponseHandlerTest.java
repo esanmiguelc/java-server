@@ -41,7 +41,7 @@ public class ResponseHandlerTest {
     @Test
     public void testReturnsTheCorrectResponderForGet() {
         HttpRequest req = new HttpRequestParser("GET /method_options HTTP/1.1").createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         responder.execute(methodOptions, req);
         assertThat(responder, is(instanceOf(GetResponder.class)));
     }
@@ -49,14 +49,14 @@ public class ResponseHandlerTest {
     @Test
     public void testMethodNotAllowedWhenRouteDoesntHaveMethod() {
         HttpRequest req = new HttpRequestParser("POST /logs HTTP/1.1").createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(MethodNotAllowedResponder.class)));
     }
 
     @Test
     public void testReturnsTheCorrectResponderForUnavailableFile() {
         HttpRequest req = new HttpRequestParser("GET /some_file HTTP/1.1").createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(NotFoundResponder.class)));
     }
 
@@ -66,14 +66,14 @@ public class ResponseHandlerTest {
 
         MockFile file = new MockFile();
         file.setFileAvailability(true);
-        Responder responder = new ResponseHandler(req, new Logger(), file).delegate();
+        Responder responder = new ResponseHandler(req, file).delegate();
         assertThat(responder, is(instanceOf(FileResponder.class)));
     }
 
     @Test
     public void testReturnsTheCorrectResponderForRoot() {
         HttpRequest req = new HttpRequestParser("GET / HTTP/1.1").createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(RootResponder.class)));
 
     }
@@ -83,14 +83,14 @@ public class ResponseHandlerTest {
         HttpRequest req = new HttpRequestParser("POST /file1 HTTP/1.1").createRequest();
         MockFile file = new MockFile();
         file.setFileAvailability(true);
-        Responder responder = new ResponseHandler(req, new Logger(), file).delegate();
+        Responder responder = new ResponseHandler(req, file).delegate();
         assertThat(responder, is(instanceOf(MethodNotAllowedResponder.class)));
     }
 
     @Test
     public void testReturnsTheCorrectResponderForPost() {
         HttpRequest req = new HttpRequestParser("POST /form HTTP/1.1").createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(PostResponder.class)));
     }
 
@@ -99,14 +99,14 @@ public class ResponseHandlerTest {
         HttpRequest req = new HttpRequestParser("GET /foobar HTTP/1.1").createRequest();
         MockFile file = new MockFile();
         file.setFileAvailability(false);
-        Responder responder = new ResponseHandler(req, new Logger(), file).delegate();
+        Responder responder = new ResponseHandler(req, file).delegate();
         assertThat(responder, is(instanceOf(NotFoundResponder.class)));
     }
 
     @Test
     public void testReturnsUnauthorizedForWrongCredentials() {
         HttpRequest req = new HttpRequestParser("GET /logs HTTP/1.1").createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(UnauthorizedResponder.class)));
     }
 
@@ -115,7 +115,7 @@ public class ResponseHandlerTest {
         String request = "GET /logs HTTP/1.1" + StringModifier.EOL;
         request += "Authorization: Basic YWRtaW46aHVudGVyMg==" + StringModifier.EOL;
         HttpRequest req = new HttpRequestParser(request).createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(GetResponder.class)));
     }
 
@@ -123,7 +123,7 @@ public class ResponseHandlerTest {
     public void testReturnsOptionsResponder() {
         String request = "OPTIONS /method_options HTTP/1.1" + StringModifier.EOL;
         HttpRequest req = new HttpRequestParser(request).createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(OptionsResponder.class)));
     }
 
@@ -131,7 +131,7 @@ public class ResponseHandlerTest {
     public void testDeleteResponder() {
         String request = "DELETE /form HTTP/1.1" + StringModifier.EOL;
         HttpRequest req = new HttpRequestParser(request).createRequest();
-        Responder responder = new ResponseHandler(req, new Logger(), new MockFile()).delegate();
+        Responder responder = new ResponseHandler(req, new MockFile()).delegate();
         assertThat(responder, is(instanceOf(DeleteResponder.class)));
     }
 }

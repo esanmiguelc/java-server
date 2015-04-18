@@ -31,10 +31,6 @@ public class RoutesRegistrar {
         return routes.containsKey(path);
     }
 
-    public boolean isSecured(String path) {
-        return routes.get(path).isSecured();
-    }
-
     public void reset() {
         this.routes = new HashMap<>();
     }

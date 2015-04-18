@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class Route {
 
     private final Map<String, Responder> config;
-    private Map<String, String> currentParams;
+    private Map<String, String> currentParams = new LinkedHashMap<>();
 
     private String path;
     private boolean auth;
@@ -20,7 +20,6 @@ public class Route {
         this.path = path;
         this.auth = auth;
         this.root = root;
-        currentParams = new LinkedHashMap<>();
         config = null;
     }
 
@@ -29,7 +28,6 @@ public class Route {
         this.auth = auth;
         this.root = false;
         this.config = null;
-        currentParams = new LinkedHashMap<>();
     }
 
     public Route(String path, boolean auth, boolean root, Map<String, Responder> config) {
@@ -37,8 +35,6 @@ public class Route {
         this.auth = auth;
         this.root = root;
         this.config = config;
-        currentParams = new LinkedHashMap<>();
-
     }
 
     public String getPath() {
@@ -58,7 +54,7 @@ public class Route {
     }
 
     public Map<String, String> getParams() {
-        return currentParams;
+        return this.currentParams;
     }
 
     public void setCurrentParams(Map<String, String> currentParams) {
@@ -66,7 +62,7 @@ public class Route {
     }
 
     public void resetParams() {
-        currentParams = new LinkedHashMap<>();
+        this.currentParams.clear();
     }
 
     public boolean hasMethod(String httpMethod) {
@@ -82,6 +78,6 @@ public class Route {
     }
 
     public boolean hasParams() {
-        return currentParams.isEmpty();
+        return !currentParams.isEmpty();
     }
 }

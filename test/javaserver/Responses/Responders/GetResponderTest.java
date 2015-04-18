@@ -24,7 +24,7 @@ public class GetResponderTest {
         }});
         MockFile file = new MockFile();
         file.setFileAvailability(false);
-        GetResponder responder = new GetResponder(route, new Logger());
+        GetResponder responder = new GetResponder();
         responder.execute(route, new MockRequest());
         assertThat(responder.contentBody(), is(equalTo("data=cat" + StringModifier.EOL)));
     }
@@ -36,21 +36,9 @@ public class GetResponderTest {
             put("data", "fatcat");
             put("other", "data");
         }});
-        GetResponder responder = new GetResponder(route, new Logger());
+        GetResponder responder = new GetResponder();
         String data = "data=fatcat" + StringModifier.EOL;
         data += "other=data" + StringModifier.EOL;
-        responder.execute(route, new MockRequest());
-        assertThat(responder.contentBody(), is(equalTo(data)));
-    }
-
-    @Test
-    public void testLoggerRouteReturnsLogs() {
-        Route route = new Route("/logs", false, false, new HashMap<>());
-        Logger logger = new Logger();
-        logger.addLog("GET /logs HTTP/1.1");
-        MockFile file = new MockFile();
-        GetResponder responder = new GetResponder(route, logger);
-        String data = "GET /logs HTTP/1.1" + StringModifier.EOL;
         responder.execute(route, new MockRequest());
         assertThat(responder.contentBody(), is(equalTo(data)));
     }

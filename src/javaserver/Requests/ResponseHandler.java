@@ -12,13 +12,11 @@ public class ResponseHandler {
     private final RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
     private HttpRequest request;
-    private Logger logger;
     private FileReader file;
     private Route route;
 
-    public ResponseHandler(HttpRequest request, Logger logger, FileReader file) {
+    public ResponseHandler(HttpRequest request, FileReader file) {
         this.request = request;
-        this.logger = logger;
         this.file = file;
         this.route = RoutesRegistrar.getInstance().getRoute(request.getUri());
     }
@@ -58,11 +56,3 @@ public class ResponseHandler {
         return request.containsHeader("Authorization") && request.getHeader("Authorization").equals(ENCRYPTED);
     }
 }
-
-//        {
-//          route => responder
-//        }
-
-// new_game = makes empty board
-// post take_turn makes a move on the board + passes the current state to server
-// get play returns the current state

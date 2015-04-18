@@ -2,7 +2,6 @@ package javaserver.Responses.Responders;
 
 import javaserver.Requests.Request;
 import javaserver.Routes.Route;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +32,9 @@ public class DeleteResponder implements Responder {
 
     @Override
     public Responder execute(Route route, Request request) {
-        deleteParams(route);
+        while (route.hasParams()) {
+            route.resetParams();
+        }
         return this;
-    }
-
-    private void deleteParams(Route route) {
-        route.resetParams();
     }
 }
