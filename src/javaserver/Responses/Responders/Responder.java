@@ -1,6 +1,5 @@
 package javaserver.Responses.Responders;
 
-import javaserver.Requests.HttpRequest;
 import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 

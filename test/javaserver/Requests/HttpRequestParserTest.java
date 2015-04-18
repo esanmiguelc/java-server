@@ -58,7 +58,7 @@ public class HttpRequestParserTest {
     }
 
     @Test
-    public void testDoesntHaveParams() {
+    public void testDoesNotHaveParams() {
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertThat(requestParser.params().isEmpty(), is(equalTo(true)));

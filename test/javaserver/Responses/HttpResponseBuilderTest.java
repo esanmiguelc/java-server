@@ -1,13 +1,11 @@
 package javaserver.Responses;
 
-import javaserver.Requests.Logger;
 import javaserver.Responses.Responders.GetResponder;
 import javaserver.Responses.Responders.Responder;
 import javaserver.Routes.Route;
 import javaserver.StringModifier;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.is;

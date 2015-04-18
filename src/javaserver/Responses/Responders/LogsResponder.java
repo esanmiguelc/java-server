@@ -1,29 +1,23 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Requests.Logger;
 import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class PostResponder implements Responder {
-    private Route route;
-    private Map<String, String> params;
+public class LogsResponder implements Responder {
 
-    public PostResponder(Route route, Map<String, String> params) {
-        this.route = route;
-        this.params = params;
-        setParams();
-    }
+    private Logger logger;
 
-    public PostResponder() {
-
+    public LogsResponder(Logger logger) {
+        this.logger = logger;
     }
 
     @Override
     public String contentBody() {
-        return route.getParams().toString();
+        return logger.logs();
     }
 
     @Override
@@ -33,7 +27,7 @@ public class PostResponder implements Responder {
 
     @Override
     public String httpMethod() {
-        return "POST";
+        return "GET";
     }
 
     @Override
@@ -43,13 +37,6 @@ public class PostResponder implements Responder {
 
     @Override
     public Responder execute(Route route, Request request) {
-        this.route = route;
-        this.params = request.getParams();
-        setParams();
         return this;
-    }
-
-    private void setParams() {
-        route.setCurrentParams(params);
     }
 }

@@ -22,7 +22,7 @@ public class ResponseBuilderTest {
     @Test
     public void testReturns200ForAvailableRoute() throws Exception {
         HttpRequest request = new HttpRequestParser("GET / HTTP/1.1 \r\n").createRequest();
-        Responder getRequest = new TrafficCop(request, new Logger(), new MockFile()).delegate();
+        Responder getRequest = new ResponseHandler(request, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getRequest);
         assertThat(handler.headers().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
@@ -30,7 +30,7 @@ public class ResponseBuilderTest {
     @Test
     public void testReturns404ForUnavailableRoute() throws Exception {
         HttpRequest requestObject = new HttpRequestParser("GET /foobar HTTP/1.1 \r\n").createRequest();
-        Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
+        Responder getResponder = new ResponseHandler(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
         assertThat(handler.headers().contains("HTTP/1.1 404 Not Found"), is(equalTo(true)));
     }
@@ -43,7 +43,7 @@ public class ResponseBuilderTest {
             put("GET", new GetResponder());
         }}));
         HttpRequest requestObject = new HttpRequestParser("GET " + route + " HTTP/1.1").createRequest();
-        Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
+        Responder getResponder = new ResponseHandler(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
         assertThat(handler.headers().contains("HTTP/1.1 401 Unauthorized"), is(equalTo(true)));
     }
@@ -57,7 +57,7 @@ public class ResponseBuilderTest {
         String request = "GET " + route + " HTTP/1.1" + StringModifier.EOL;
         request += "Authorization: Basic YWRtaW46aHVudGVyMg==" + StringModifier.EOL;
         HttpRequest requestObject = new HttpRequestParser(request).createRequest();
-        Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
+        Responder getResponder = new ResponseHandler(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
         assertThat(handler.headers().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
     }
@@ -72,7 +72,7 @@ public class ResponseBuilderTest {
         }}));
         String request = "OPTIONS " + route + " HTTP/1.1" + StringModifier.EOL;
         HttpRequest requestObject = new HttpRequestParser(request).createRequest();
-        Responder getResponder = new TrafficCop(requestObject, new Logger(), new MockFile()).delegate();
+        Responder getResponder = new ResponseHandler(requestObject, new Logger(), new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getResponder);
         assertThat(handler.responseBody(), is(equalTo("Allow: GET,POST,OPTIONS")));
     }

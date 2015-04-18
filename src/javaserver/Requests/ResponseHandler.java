@@ -5,7 +5,7 @@ import javaserver.Responses.Responders.*;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 
-public class TrafficCop {
+public class ResponseHandler {
 
     public static final String ENCRYPTED = "Basic YWRtaW46aHVudGVyMg==";
 
@@ -16,7 +16,7 @@ public class TrafficCop {
     private FileReader file;
     private Route route;
 
-    public TrafficCop(HttpRequest request, Logger logger, FileReader file) {
+    public ResponseHandler(HttpRequest request, Logger logger, FileReader file) {
         this.request = request;
         this.logger = logger;
         this.file = file;
@@ -28,17 +28,12 @@ public class TrafficCop {
             if (!route.hasMethod(request.getHttpMethod())) {
                 return new MethodNotAllowedResponder().execute(route,request);
             } else {
-                if (route.isRoot()) {
-                    return route.responder("GET").execute(route,request);
-                }
                 if (route.isSecured()) {
                     if (!isAuthenticated()) {
                         return new UnauthorizedResponder().execute(route,request);
                     }
-                } else {
-                    return route.responder(request.getHttpMethod()).execute(route, request);
                 }
-                return validRouteResponderFactory();
+                return route.responder(request.getHttpMethod()).execute(route, request);
             }
         } else if (containsFile()) {
             return fileResponderFactory().execute(route,request);
@@ -49,21 +44,6 @@ public class TrafficCop {
 
     private Responder fileResponderFactory() {
         return (request.getHttpMethod().equals("GET")) ? new FileResponder(file).execute(route,request) : new MethodNotAllowedResponder().execute(route,request);
-    }
-
-    private Responder validRouteResponderFactory() {
-        switch (request.getHttpMethod()) {
-            case "POST":
-                return new PostResponder(route, request.getParams()).execute(route, request);
-            case "PUT":
-                return new PostResponder(route, request.getParams()).execute(route,request);
-            case "OPTIONS":
-                return new OptionsResponder(route).execute(route,request);
-            case "DELETE":
-                return new DeleteResponder().execute(route, request);
-            default:
-                return new GetResponder(route, logger).execute(route, request);
-        }
     }
 
     private boolean containsFile() {

@@ -1,6 +1,5 @@
 package javaserver.Responses;
 
-import javaserver.Responses.Responders.Responder;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 import org.junit.Before;

@@ -1,6 +1,7 @@
 package javaserver.config;
 
 import javaserver.MyFileReader;
+import javaserver.Requests.Logger;
 import javaserver.Responses.Responders.*;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
@@ -8,9 +9,9 @@ import javaserver.Routes.RoutesRegistrar;
 import java.util.HashMap;
 
 public class RoutesConfig {
-    public static void seedRoutes() {
+    public static void seedRoutes(ServerConfig config, Logger logger) {
         RoutesRegistrar.getInstance().registerRoute(new Route("/", false, true, new HashMap<String, Responder>() {{
-            put("GET", new RootResponder(new MyFileReader()));
+            put("GET", new RootResponder(new MyFileReader(config.getDirectory())));
         }}));
         RoutesRegistrar.getInstance().registerRoute(new Route("/form", false, false, new HashMap<String, Responder>() {{
             put("GET", new GetResponder());
@@ -20,7 +21,7 @@ public class RoutesConfig {
             put("DELETE", new DeleteResponder());
         }}));
         RoutesRegistrar.getInstance().registerRoute(new Route("/logs", true, false, new HashMap<String, Responder>() {{
-            put("GET", new GetResponder());
+            put("GET", new LogsResponder(logger));
         }}));
         RoutesRegistrar.getInstance().registerRoute(new Route("/method_options", false, false, new HashMap<String, Responder>() {{
             put("GET", new GetResponder());

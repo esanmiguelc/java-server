@@ -1,7 +1,6 @@
 package javaserver.Responses.Responders;
 
 import javaserver.MockRequest;
-import javaserver.Requests.HttpRequest;
 import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 import org.junit.Test;

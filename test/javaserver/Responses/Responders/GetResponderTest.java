@@ -1,6 +1,5 @@
 package javaserver.Responses.Responders;
 
-import javaserver.FileReader;
 import javaserver.MockRequest;
 import javaserver.Requests.Logger;
 import javaserver.Requests.MockFile;
@@ -8,7 +7,6 @@ import javaserver.Routes.Route;
 import javaserver.StringModifier;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -22,13 +20,13 @@ public class GetResponderTest {
     public void testShowsTheParams() {
         Route route = new Route("/", false, false, new HashMap<>());
         route.setCurrentParams(new LinkedHashMap<String, String>() {{
-            put("data", "fatcat");
+            put("data", "cat");
         }});
         MockFile file = new MockFile();
         file.setFileAvailability(false);
         GetResponder responder = new GetResponder(route, new Logger());
         responder.execute(route, new MockRequest());
-        assertThat(responder.contentBody(), is(equalTo("data=fatcat" + StringModifier.EOL)));
+        assertThat(responder.contentBody(), is(equalTo("data=cat" + StringModifier.EOL)));
     }
 
     @Test

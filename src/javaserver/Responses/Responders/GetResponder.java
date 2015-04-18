@@ -10,7 +10,6 @@ import java.util.List;
 
 public class GetResponder implements Responder {
 
-    public static final String LOGS = "/logs";
     private Logger logger;
     private String content = "";
     private Route route;
@@ -25,6 +24,7 @@ public class GetResponder implements Responder {
 
     @Override
     public String contentBody() {
+        String LOGS = "/logs";
         if(route.getPath().equals(LOGS)) {
             return logger.logs();
         }
