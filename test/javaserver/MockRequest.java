@@ -5,6 +5,9 @@ import javaserver.Requests.Request;
 import java.util.Map;
 
 public class MockRequest implements Request {
+    private String method = "GET";
+    private String URI;
+
     @Override
     public String statusCode() {
         return null;
@@ -12,12 +15,12 @@ public class MockRequest implements Request {
 
     @Override
     public String getHttpMethod() {
-        return null;
+        return method;
     }
 
     @Override
     public String getUri() {
-        return null;
+        return URI;
     }
 
     @Override
@@ -43,5 +46,13 @@ public class MockRequest implements Request {
     @Override
     public String getHeader(String key) {
         return null;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setURI(String URI) {
+        this.URI = URI;
     }
 }

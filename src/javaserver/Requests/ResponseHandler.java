@@ -11,11 +11,11 @@ public class ResponseHandler {
 
     private final RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
-    private HttpRequest request;
+    private Request request;
     private FileReader file;
     private Route route;
 
-    public ResponseHandler(HttpRequest request, FileReader file) {
+    public ResponseHandler(Request request, FileReader file) {
         this.request = request;
         this.file = file;
         this.route = RoutesRegistrar.getInstance().getRoute(request.getUri());
