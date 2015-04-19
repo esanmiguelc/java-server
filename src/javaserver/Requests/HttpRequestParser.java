@@ -51,24 +51,21 @@ public class HttpRequestParser {
 
     private List<String> filterHeaders() {
         return request.stream()
-                    .filter((line) -> line.contains(": "))
-                    .collect(Collectors.toList());
+                .filter((line) -> line.contains(": "))
+                .collect(Collectors.toList());
     }
 
     public Map<String, String> params() {
         List<String> params = request.stream()
-                .filter((line) -> line.matches("\\w+=\\w.+"))
+                .filter((line) -> line.matches("\\w+=.+"))
                 .collect(Collectors.toList());
-        if(!params.isEmpty()) {
-            String[] splitParams = params.get(0).split("&");
-            HashMap<String, String> parsed = new HashMap<>();
-            for (String param : splitParams) {
-                String[] split = param.split("=");
-                parsed.put(split[0], split[1]);
-            }
-            return parsed;
+        String[] splitParams = params.get(0).split("&");
+        HashMap<String, String> parsed = new HashMap<>();
+        for (String param : splitParams) {
+            String[] split = param.split("=");
+            parsed.put(split[0], split[1]);
         }
-        return new HashMap<>();
+        return parsed;
     }
 
     public HttpRequest createRequest() {

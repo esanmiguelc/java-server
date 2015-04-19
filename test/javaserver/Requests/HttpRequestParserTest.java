@@ -72,6 +72,20 @@ public class HttpRequestParserTest {
         request += StringModifier.EOL;
         request += paramKey + "=" + parameters.get(paramKey);
         HttpRequestParser requestParser = new HttpRequestParser(request);
+        System.out.println(requestParser.params());
+
+        assertThat(requestParser.params(), is(equalTo(parameters)));
+    }
+
+    @Test
+    public void testParsesWithOne() {
+        Map<String, String> parameters = new HashMap<>();
+        String paramKey = "data";
+        parameters.put(paramKey, "1");
+        request += StringModifier.EOL;
+        request += paramKey + "=" + parameters.get(paramKey);
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+        System.out.println(requestParser.params());
 
         assertThat(requestParser.params(), is(equalTo(parameters)));
     }
