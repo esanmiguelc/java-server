@@ -57,14 +57,18 @@ public class HttpRequestParser {
 
     public Map<String, String> params() {
         List<String> params = request.stream()
-                .filter((line) -> line.matches("\\w+=\\w+"))
+                .filter((line) -> line.matches("\\w+=\\w.+"))
                 .collect(Collectors.toList());
-        HashMap<String, String> parsed = new HashMap<>();
-        for (String param : params) {
-            String[] split = param.split("=");
-            parsed.put(split[0], split[1]);
+        if(!params.isEmpty()) {
+            String[] splitParams = params.get(0).split("&");
+            HashMap<String, String> parsed = new HashMap<>();
+            for (String param : splitParams) {
+                String[] split = param.split("=");
+                parsed.put(split[0], split[1]);
+            }
+            return parsed;
         }
-        return parsed;
+        return new HashMap<>();
     }
 
     public HttpRequest createRequest() {

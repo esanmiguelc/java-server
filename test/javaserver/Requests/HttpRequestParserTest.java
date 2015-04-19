@@ -68,9 +68,22 @@ public class HttpRequestParserTest {
     public void testParsesParams() {
         Map<String, String> parameters = new HashMap<>();
         String paramKey = "data";
-        parameters.put(paramKey, "fatcat");
+        parameters.put(paramKey, "FatCat");
         request += StringModifier.EOL;
         request += paramKey + "=" + parameters.get(paramKey);
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.params(), is(equalTo(parameters)));
+    }
+
+    @Test
+    public void testParsesMultipleParams() {
+        Map<String, String> parameters = new HashMap<>();
+        String paramKey = "data";
+        parameters.put(paramKey, "FatCat");
+        parameters.put("data1", "HeathCliff");
+        request += StringModifier.EOL;
+        request += paramKey + "=" + parameters.get(paramKey) + "&" + "data1=HeathCliff";
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertThat(requestParser.params(), is(equalTo(parameters)));
