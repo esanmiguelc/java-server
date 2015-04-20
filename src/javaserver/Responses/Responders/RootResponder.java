@@ -1,6 +1,8 @@
 package javaserver.Responses.Responders;
 
 import javaserver.FileReader;
+import javaserver.Requests.Request;
+import javaserver.Routes.Route;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +15,13 @@ public class RootResponder implements Responder {
         this.fileReader = fileReader;
     }
 
+    public RootResponder() {
+        fileReader = null;
+    }
+
     @Override
     public String contentBody() {
-        return fileReader.getDirectoryContents()
+         return fileReader.getDirectoryContents()
                 .map(file -> "<a href=\"/" + file.getFileName() + "\">" + file.getFileName() + "</a></br>")
                 .collect(Collectors.joining(""));
     }
@@ -33,5 +39,10 @@ public class RootResponder implements Responder {
     @Override
     public List<String> additionalHeaders() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public Responder execute(Route route, Request request) {
+        return this;
     }
 }

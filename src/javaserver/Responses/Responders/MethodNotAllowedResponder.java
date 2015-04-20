@@ -1,5 +1,8 @@
 package javaserver.Responses.Responders;
 
+import javaserver.Requests.Request;
+import javaserver.Routes.Route;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,5 +25,10 @@ public class MethodNotAllowedResponder implements Responder {
     @Override
     public List<String> additionalHeaders() {
         return new ArrayList<>();
+    }
+
+    @Override
+    public Responder execute(Route route, Request request) {
+        return this;
     }
 }

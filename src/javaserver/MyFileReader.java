@@ -1,9 +1,13 @@
 package javaserver;
 
 import javax.activation.MimetypesFileTypeMap;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 public class MyFileReader implements FileReader {
@@ -13,6 +17,10 @@ public class MyFileReader implements FileReader {
     public MyFileReader(Path path, PrintStream writer) {
         this.path = path;
         this.writer = writer;
+    }
+
+    public MyFileReader(String directory) {
+        this.path = Paths.get(directory);
     }
 
     @Override
@@ -32,6 +40,11 @@ public class MyFileReader implements FileReader {
     }
     private Path getDirectory() {
         return path.toAbsolutePath();
+    }
+
+    @Override
+    public void path(String path) {
+        this.path = Paths.get(path);
     }
 
     @Override

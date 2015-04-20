@@ -24,6 +24,11 @@ public class MockFile implements FileReader {
     }
 
     @Override
+    public void path(String path) {
+
+    }
+
+    @Override
     public void process() {
     }
 

@@ -8,6 +8,8 @@ public interface FileReader {
 
     Stream<Path> getDirectoryContents();
 
+    void path(String path);
+
     void process();
 
     boolean isDirectory();

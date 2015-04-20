@@ -5,20 +5,18 @@ import javaserver.Responses.Responders.*;
 import javaserver.Routes.Route;
 import javaserver.Routes.RoutesRegistrar;
 
-public class TrafficCop {
+public class ResponseHandler {
 
     public static final String ENCRYPTED = "Basic YWRtaW46aHVudGVyMg==";
 
     private final RoutesRegistrar routes = RoutesRegistrar.getInstance();
 
     private Request request;
-    private Logger logger;
     private FileReader file;
     private Route route;
 
-    public TrafficCop(Request request, Logger logger, FileReader file) {
+    public ResponseHandler(Request request, FileReader file) {
         this.request = request;
-        this.logger = logger;
         this.file = file;
         this.route = RoutesRegistrar.getInstance().getRoute(request.getUri());
     }
@@ -26,46 +24,24 @@ public class TrafficCop {
     public Responder delegate() {
         if (containsRoute()) {
             if (!route.hasMethod(request.getHttpMethod())) {
-                return new MethodNotAllowedResponder();
+                return new MethodNotAllowedResponder().execute(route,request);
             } else {
-                if (route.isRoot()) {
-                    return new RootResponder(file);
-                }
                 if (route.isSecured()) {
                     if (!isAuthenticated()) {
-                        return new UnauthorizedResponder();
+                        return new UnauthorizedResponder().execute(route,request);
                     }
                 }
-                return validRouteResponderFactory();
+                return route.responder(request.getHttpMethod()).execute(route, request);
             }
         } else if (containsFile()) {
-            return fileResponderFactory();
+            return fileResponderFactory().execute(route,request);
         } else {
-            return new NotFoundResponder();
+            return new NotFoundResponder().execute(route,request);
         }
     }
 
     private Responder fileResponderFactory() {
-        if (request.getHttpMethod().equals("GET")) {
-            return new FileResponder(file);
-        } else {
-            return new MethodNotAllowedResponder();
-        }
-    }
-
-    private Responder validRouteResponderFactory() {
-        switch (request.getHttpMethod()) {
-            case "POST":
-                return new PostResponder(route, request.getParams());
-            case "PUT":
-                return new PostResponder(route, request.getParams());
-            case "OPTIONS":
-                return new OptionsResponder(route);
-            case "DELETE":
-                return new DeleteResponder(route);
-            default:
-                return new GetResponder(route, logger);
-        }
+        return (request.getHttpMethod().equals("GET")) ? new FileResponder(file).execute(route,request) : new MethodNotAllowedResponder().execute(route,request);
     }
 
     private boolean containsFile() {

@@ -1,10 +1,10 @@
 package javaserver.Handlers;
 
 import javaserver.MyFileReader;
+import javaserver.Requests.HttpRequest;
 import javaserver.Requests.HttpRequestParser;
 import javaserver.Requests.Logger;
-import javaserver.Requests.Request;
-import javaserver.Requests.TrafficCop;
+import javaserver.Requests.ResponseHandler;
 import javaserver.Responses.HttpResponseBuilder;
 import javaserver.Responses.Responders.Responder;
 
@@ -41,11 +41,11 @@ public class ConnectionHandler extends Thread {
 
             System.out.println(requestString);
             System.out.println("");
-            Request request = new HttpRequestParser(requestString).createRequest();
+            HttpRequest request = new HttpRequestParser(requestString).createRequest();
             logger.addLog(request.statusCode());
             Path path = Paths.get(publicPath + request.getUri());
             MyFileReader fileReader = new MyFileReader(path, writer);
-            Responder responder = new TrafficCop(request, logger, fileReader).delegate();
+            Responder responder = new ResponseHandler(request, fileReader).delegate();
             HttpResponseBuilder responseBuilder = new HttpResponseBuilder(responder);
 
             writer.print(responseBuilder.headers());

@@ -1,9 +1,9 @@
 package javaserver.Responses.Responders;
 
 import javaserver.Routes.Route;
+import javaserver.TestHelper;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,8 +14,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class PostResponderTest {
     @Test
     public void testSavesParamsOnRoute() {
-        Route route = new Route("/form", false, Arrays.asList("GET"));
-        Map<String, String> params = new HashMap<String, String>(){{
+        Route route = TestHelper.createRoute("/form", false, false, new HashMap<String, Responder>() {{
+            put("GET", new GetResponder());
+        }});
+        Map<String, String> params = new HashMap<String, String>() {{
             put("data", "fatcat");
         }};
 

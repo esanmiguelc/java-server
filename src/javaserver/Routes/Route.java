@@ -1,32 +1,40 @@
 package javaserver.Routes;
 
+import javaserver.Responses.Responders.Responder;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Route {
 
-    private Map<String, String> currentParams;
+    private final Map<String, Responder> config;
+    private Map<String, String> currentParams = new LinkedHashMap<>();
 
     private String path;
     private boolean auth;
-    private List<String> methods;
     private boolean root;
 
-    public Route(String path, boolean auth, List<String> methods, boolean root) {
+    public Route(String path, boolean auth, boolean root) {
         this.path = path;
         this.auth = auth;
-        this.methods = methods;
         this.root = root;
-        currentParams = new LinkedHashMap<>();
+        config = null;
     }
 
-    public Route(String path, boolean auth, List<String> methods) {
+    public Route(String path, boolean auth) {
         this.path = path;
         this.auth = auth;
         this.root = false;
-        this.methods = methods;
-        currentParams = new LinkedHashMap<>();
+        this.config = null;
+    }
+
+    public Route(String path, boolean auth, boolean root, Map<String, Responder> config) {
+        this.path = path;
+        this.auth = auth;
+        this.root = root;
+        this.config = config;
     }
 
     public String getPath() {
@@ -38,7 +46,7 @@ public class Route {
     }
 
     public List<String> getMethods() {
-        return methods;
+        return config.keySet().stream().collect(Collectors.toList());
     }
 
     public boolean isRoot() {
@@ -46,7 +54,7 @@ public class Route {
     }
 
     public Map<String, String> getParams() {
-        return currentParams;
+        return this.currentParams;
     }
 
     public void setCurrentParams(Map<String, String> currentParams) {
@@ -54,10 +62,22 @@ public class Route {
     }
 
     public void resetParams() {
-        currentParams = new LinkedHashMap<>();
+        this.currentParams.clear();
     }
 
     public boolean hasMethod(String httpMethod) {
-        return methods.contains(httpMethod);
+        return config.containsKey(httpMethod);
+    }
+
+    public boolean hasResponder(String method) {
+        return config.containsKey(method);
+    }
+
+    public Responder responder(String method) {
+        return config.get(method);
+    }
+
+    public boolean hasParams() {
+        return !currentParams.isEmpty();
     }
 }
