@@ -13,6 +13,9 @@ public class RoutesConfig {
         RoutesRegistrar.getInstance().registerRoute(new Route("/", false, true, new HashMap<String, Responder>() {{
             put("GET", new RootResponder(new MyFileReader(config.getDirectory())));
         }}));
+        RoutesRegistrar.getInstance().registerRoute(new Route("/redirect", false, false, new HashMap<String, Responder>() {{
+            put("GET", new RedirectResponder());
+        }}));
         RoutesRegistrar.getInstance().registerRoute(new Route("/form", false, false, new HashMap<String, Responder>() {{
             put("GET", new GetResponder());
             put("POST", new PostResponder());

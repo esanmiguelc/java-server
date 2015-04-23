@@ -1,5 +1,7 @@
 package javaserver.Requests;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -56,21 +58,45 @@ public class HttpRequestParser {
     }
 
     public Map<String, String> params() {
-        HashMap<String, String> parsed = new HashMap<>();
         List<String> params = request.stream()
                 .filter((line) -> line.matches("\\w+=.+"))
                 .collect(Collectors.toList());
-        if(!params.isEmpty()) {
-            String[] splitParams = params.get(0).split("&");
+        if (params.isEmpty()) {
+            return new HashMap<>();
+        }
+        return parseParams(params.get(0));
+    }
+
+    private Map<String,String> parseParams(String params) {
+        HashMap<String, String> parsed = new HashMap<>();
+        if (!params.isEmpty()) {
+            String[] splitParams = params.split("&");
             for (String param : splitParams) {
                 String[] split = param.split("=");
-                parsed.put(split[0], split[1]);
+                try {
+                    parsed.put(split[0], URLDecoder.decode(split[1], "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return parsed;
     }
 
     public HttpRequest createRequest() {
-        return new HttpRequest(httpMethod(),uri(),protocol(), parseHeaders(), params());
+        HashMap<String, String> params = new HashMap<>();
+        params.putAll(params());
+        params.putAll(uriParams());
+        if (hasUriParams()) {
+            return new HttpRequest(httpMethod(), uri().substring(0, uri().indexOf("?")), protocol(), parseHeaders(), params);
+        }
+        return new HttpRequest(httpMethod(), uri(), protocol(), parseHeaders(), params());
     }
+
+    public Map<String, String> uriParams() {
+        String params = uri().substring(uri().indexOf("?") + 1);
+        return hasUriParams() ? parseParams(params) : new HashMap<>();
+    }
+
+    private boolean hasUriParams() {return uri().contains("?");}
 }

@@ -42,4 +42,18 @@ public class GetResponderTest {
         responder.execute(route, new MockRequest());
         assertThat(responder.contentBody(), is(equalTo(data)));
     }
+
+    @Test
+    public void testGetsUrlParams() {
+        Route route = new Route("/", false, false, new HashMap<>());
+        route.setCurrentParams(new LinkedHashMap<String, String>() {{
+            put("data", "fatcat");
+            put("other", "data");
+        }});
+        GetResponder responder = new GetResponder();
+        String data = "data=fatcat" + StringModifier.EOL;
+        data += "other=data" + StringModifier.EOL;
+        responder.execute(route, new MockRequest());
+        assertThat(responder.contentBody(), is(equalTo(data)));
+    }
 }

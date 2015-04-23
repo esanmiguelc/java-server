@@ -33,6 +33,25 @@ public class HttpRequestParserTest {
     }
 
     @Test
+    public void testReturnsTheCorrectUri() {
+        String request = "POST /something?data=1 HTTP/1.1 \r\n";
+        HttpRequest requestObject = new HttpRequestParser(request).createRequest();
+
+        assertEquals("/something", requestObject.getUri());
+    }
+
+    @Test
+    public void testReturnsTheCorrectParams() {
+        String request = "POST /something?data=1 HTTP/1.1 \r\n";
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("data", "1");
+        }};
+        HttpRequest requestObject = new HttpRequestParser(request).createRequest();
+
+        assertThat(requestObject.getParams(), is(equalTo(params)));
+    }
+
+    @Test
     public void testGetsTheURIRoute() {
         String uri = "/";
         HttpRequestParser requestParser = new HttpRequestParser(request);
@@ -43,10 +62,50 @@ public class HttpRequestParserTest {
     @Test
     public void testGetsTheURIRouteWithPath() {
         String uri = "/foobar";
-        String request = "GET /foobar HTTP/1.1" + StringModifier.EOL;
+        String request = "GET " + uri + " HTTP/1.1" + StringModifier.EOL;
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertEquals(uri, requestParser.uri());
+    }
+
+    @Test
+    public void testGetsMultipleUrlParams() {
+        String uri = "/foobar?hello=goodbye&foo=bar";
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("hello", "goodbye");
+            put("foo", "bar");
+        }};
+        String request = "GET " + uri + " HTTP/1.1" + StringModifier.EOL;
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.uriParams(), is(equalTo(params)));
+
+    }
+
+    @Test
+    public void testEncodedParams() {
+        String uri = "/foobar?hello=good%26bye&foo=bar";
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("hello", "good&bye");
+            put("foo", "bar");
+        }};
+        String request = "GET " + uri + " HTTP/1.1" + StringModifier.EOL;
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.uriParams(), is(equalTo(params)));
+
+    }
+
+    @Test
+    public void testGetsTheUrlParams() {
+        String uri = "/foobar?hello=goodbye";
+        HashMap<String, String> params = new HashMap<String, String>() {{
+            put("hello", "goodbye");
+        }};
+        String request = "GET " + uri + " HTTP/1.1" + StringModifier.EOL;
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.uriParams(), is(equalTo(params)));
     }
 
     @Test
@@ -71,7 +130,6 @@ public class HttpRequestParserTest {
         request += StringModifier.EOL;
         request += paramKey + "=" + parameters.get(paramKey);
         HttpRequestParser requestParser = new HttpRequestParser(request);
-        System.out.println(requestParser.params());
 
         assertThat(requestParser.params(), is(equalTo(parameters)));
     }
@@ -84,7 +142,6 @@ public class HttpRequestParserTest {
         request += StringModifier.EOL;
         request += paramKey + "=" + parameters.get(paramKey);
         HttpRequestParser requestParser = new HttpRequestParser(request);
-        System.out.println(requestParser.params());
 
         assertThat(requestParser.params(), is(equalTo(parameters)));
     }
