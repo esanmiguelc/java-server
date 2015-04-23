@@ -84,13 +84,17 @@ public class HttpRequestParser {
     }
 
     public HttpRequest createRequest() {
-        HashMap<String, String> params = new HashMap<>();
-        params.putAll(params());
-        params.putAll(uriParams());
         if (hasUriParams()) {
-            return new HttpRequest(httpMethod(), uri().substring(0, uri().indexOf("?")), protocol(), parseHeaders(), params);
+            return new HttpRequest(httpMethod(), uri().substring(0, uri().indexOf("?")), protocol(), parseHeaders(), mergedParams());
         }
-        return new HttpRequest(httpMethod(), uri(), protocol(), parseHeaders(), params());
+        return new HttpRequest(httpMethod(), uri(), protocol(), parseHeaders(), mergedParams());
+    }
+
+    private Map<String, String> mergedParams() {
+        Map<String, String> mergedParams = new HashMap<>();
+        mergedParams.putAll(params());
+        mergedParams.putAll(uriParams());
+        return mergedParams;
     }
 
     public Map<String, String> uriParams() {

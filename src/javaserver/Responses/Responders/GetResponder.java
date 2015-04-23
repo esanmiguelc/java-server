@@ -6,6 +6,7 @@ import javaserver.StringModifier;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class GetResponder implements Responder {
 
@@ -38,10 +39,16 @@ public class GetResponder implements Responder {
     public Responder execute(Route route, Request request) {
         this.content = "";
         if (route.hasParams()) {
-            route.getParams().entrySet()
-                    .stream()
-                    .forEach((entry) -> content += entry.getKey() + "=" + entry.getValue() + StringModifier.EOL);
+            displayParams(route.getParams());
+        } else {
+            displayParams(request.getParams());
         }
         return this;
+    }
+
+    private void displayParams(Map<String, String> params) {
+        params.entrySet()
+                .stream()
+                .forEach((entry) -> content += entry.getKey() + "=" + entry.getValue() + StringModifier.EOL);
     }
 }
