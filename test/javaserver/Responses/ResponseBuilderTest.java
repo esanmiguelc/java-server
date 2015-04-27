@@ -21,7 +21,11 @@ public class ResponseBuilderTest {
 
     @Test
     public void testReturns200ForAvailableRoute() throws Exception {
-        HttpRequest request = new HttpRequestParser("GET / HTTP/1.1 \r\n").createRequest();
+        String route = "/";
+        RoutesRegistrar.getInstance().registerRoute(new Route(route, false, false, new HashMap<String, Responder>(){{
+            put("GET", new GetResponder());
+        }}));
+        HttpRequest request = new HttpRequestParser("GET " + route + " HTTP/1.1 \r\n").createRequest();
         Responder getRequest = new ResponseHandler(request, new MockFile()).delegate();
         ResponseBuilder handler = new HttpResponseBuilder(getRequest);
         assertThat(handler.headers().contains("HTTP/1.1 200 OK"), is(equalTo(true)));
