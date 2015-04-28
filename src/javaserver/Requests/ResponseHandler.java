@@ -41,7 +41,11 @@ public class ResponseHandler {
     }
 
     private Responder fileResponderFactory() {
-        return (request.getHttpMethod().equals("GET")) ? new FileResponder(file).execute(route,request) : new MethodNotAllowedResponder().execute(route,request);
+        if (!request.getHttpMethod().equals("GET")) {
+            return new MethodNotAllowedResponder().execute(route, request);
+        } else {
+            return new FileResponder(file).execute(route, request);
+        }
     }
 
     private boolean containsFile() {
