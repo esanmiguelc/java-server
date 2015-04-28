@@ -48,17 +48,21 @@ public class MyFileReader implements FileReader {
     }
 
     @Override
-    public void process() {
+    public byte[] process() {
         InputStream file;
+        byte[] content = new byte[0];
         try {
             file = new FileInputStream(path.toString());
             byte[] b = new byte[4096];
-            while(file.read( b ) > 0 ) {
+            while (file.read(b) > 0) {
                 writer.write(b);
+                content = b;
             }
+            file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return content;
     }
 
     public String mimeType() {

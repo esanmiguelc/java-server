@@ -10,7 +10,7 @@ public interface FileReader {
 
     void path(String path);
 
-    void process();
+    byte[] process();
 
     boolean isDirectory();
 

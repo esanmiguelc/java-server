@@ -29,7 +29,8 @@ public class MockFile implements FileReader {
     }
 
     @Override
-    public void process() {
+    public byte[] process() {
+        return new byte[0];
     }
 
     @Override

@@ -16,8 +16,8 @@ public class FileResponder implements Responder {
 
     @Override
     public String contentBody() {
-        if(file.exists() && !file.isDirectory()) {
-            file.process();
+        if (file.exists() && !file.isDirectory()) {
+            return new String(file.process());
         }
         return "";
     }
