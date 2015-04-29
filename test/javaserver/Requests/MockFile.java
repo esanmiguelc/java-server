@@ -1,6 +1,7 @@
 package javaserver.Requests;
 
 import javaserver.FileReader;
+import javaserver.Parser.RangeParser;
 
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -29,8 +30,8 @@ public class MockFile implements FileReader {
     }
 
     @Override
-    public byte[] process() {
-        return new byte[0];
+    public void process() {
+
     }
 
     @Override
@@ -41,5 +42,15 @@ public class MockFile implements FileReader {
     @Override
     public String mimeType() {
         return null;
+    }
+
+    @Override
+    public Integer size() {
+        return 0;
+    }
+
+    @Override
+    public void process(RangeParser rangeParser) {
+
     }
 }
