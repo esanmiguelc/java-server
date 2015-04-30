@@ -51,7 +51,7 @@ public class MyFileReader implements FileReader {
     }
 
     @Override
-    public void process() {
+    public void write() {
         InputStream file;
         try {
             file = new FileInputStream(path.toString());
@@ -66,7 +66,7 @@ public class MyFileReader implements FileReader {
     }
 
     @Override
-    public void process(RangeParser rangeParser) {
+    public void write(RangeParser rangeParser) {
         InputStream file;
         try {
             file = new FileInputStream(path.toString());
@@ -87,9 +87,17 @@ public class MyFileReader implements FileReader {
         }
     }
 
+    @Override
+    public void write(String content) {
+        try {
+            Files.write(path, content.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String mimeType() {
-        MimetypesFileTypeMap mimetypesFileTypeMap = new MimetypesFileTypeMap();
-        return mimetypesFileTypeMap.getContentType(path.toFile());
+        return new MimetypesFileTypeMap().getContentType(path.toFile());
     }
 
     @Override

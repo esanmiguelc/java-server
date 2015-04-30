@@ -48,6 +48,11 @@ public class MockRequest implements Request {
         return null;
     }
 
+    @Override
+    public String content() {
+        return null;
+    }
+
     public void setMethod(String method) {
         this.method = method;
     }

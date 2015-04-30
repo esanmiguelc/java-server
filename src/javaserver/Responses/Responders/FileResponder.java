@@ -5,7 +5,6 @@ import javaserver.Parser.RangeParser;
 import javaserver.Requests.Request;
 import javaserver.Routes.Route;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,17 +23,29 @@ public class FileResponder implements Responder {
             if (isPartial()) {
                 String range = request.getHeader("Range");
                 RangeParser rangeParser = new RangeParser(range);
-                file.process(rangeParser);
+                file.write(rangeParser);
+            } else if (isPatch()) {
+                file.write(request.content());
             } else {
-                file.process();
+                file.write();
             }
         }
         return "";
     }
 
+    private boolean isPatch() {
+        return request.getHttpMethod().equals("PATCH");
+    }
+
     @Override
     public String statusCode() {
-        return isPartial() ? "206 Partial Content" : "200 OK";
+        if (isPartial()) {
+            return "206 Partial Content";
+        } else if (isPatch()) {
+            return "204 No Content";
+        } else {
+            return "200 OK";
+        }
     }
 
     private boolean isPartial() {

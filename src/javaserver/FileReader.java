@@ -12,7 +12,7 @@ public interface FileReader {
 
     void path(String path);
 
-    void process();
+    void write();
 
     boolean isDirectory();
 
@@ -20,5 +20,7 @@ public interface FileReader {
 
     Integer size();
 
-    void process(RangeParser rangeParser);
+    void write(RangeParser rangeParser);
+
+    void write(String content);
 }

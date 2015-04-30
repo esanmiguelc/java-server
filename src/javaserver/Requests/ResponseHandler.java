@@ -41,10 +41,11 @@ public class ResponseHandler {
     }
 
     private Responder fileResponderFactory() {
-        if (!request.getHttpMethod().equals("GET")) {
-            return new MethodNotAllowedResponder().execute(route, request);
-        } else {
+        String httpMethod = request.getHttpMethod();
+        if (httpMethod.equals("GET") || httpMethod.equals("PATCH")) {
             return new FileResponder(file).execute(route, request);
+        } else {
+            return new MethodNotAllowedResponder().execute(route, request);
         }
     }
 
