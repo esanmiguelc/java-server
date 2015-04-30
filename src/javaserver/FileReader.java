@@ -1,5 +1,7 @@
 package javaserver;
 
+import javaserver.Parser.RangeParser;
+
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
@@ -10,9 +12,13 @@ public interface FileReader {
 
     void path(String path);
 
-    byte[] process();
+    void process();
 
     boolean isDirectory();
 
     String mimeType();
+
+    Integer size();
+
+    void process(RangeParser rangeParser);
 }
