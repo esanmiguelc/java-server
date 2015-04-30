@@ -30,7 +30,7 @@ public class MockFile implements FileReader {
     }
 
     @Override
-    public void process() {
+    public void write() {
 
     }
 
@@ -50,7 +50,12 @@ public class MockFile implements FileReader {
     }
 
     @Override
-    public void process(RangeParser rangeParser) {
+    public void write(RangeParser rangeParser) {
+
+    }
+
+    @Override
+    public void write(String content) {
 
     }
 }

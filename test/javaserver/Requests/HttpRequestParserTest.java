@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -157,5 +158,24 @@ public class HttpRequestParserTest {
         HttpRequestParser requestParser = new HttpRequestParser(request);
 
         assertThat(requestParser.params(), is(equalTo(parameters)));
+    }
+
+
+    @Test
+    public void testHasContent() {
+        request += StringModifier.EOL;
+        String content = "hello world";
+        request += content;
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.content(), is(equalTo(content)));
+    }
+
+    @Test
+    public void testHasNoContent() {
+        request += StringModifier.EOL;
+        HttpRequestParser requestParser = new HttpRequestParser(request);
+
+        assertThat(requestParser.content(), is(equalTo("")));
     }
 }

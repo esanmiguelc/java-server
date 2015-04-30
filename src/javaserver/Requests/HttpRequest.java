@@ -9,13 +9,15 @@ public class HttpRequest implements Request {
     private String protocol;
     private Map<String, String> headers;
     private Map<String, String> params;
+    private String content = "";
 
-    public HttpRequest(String httpMethod, String uri, String protocol, Map<String, String> headers, Map<String, String> params) {
+    public HttpRequest(String httpMethod, String uri, String protocol, Map<String, String> headers, Map<String, String> params, String content) {
         this.httpMethod = httpMethod;
         this.uri = uri;
         this.protocol = protocol;
         this.headers = headers;
         this.params = params;
+        this.content = content;
     }
 
     @Override
@@ -57,4 +59,10 @@ public class HttpRequest implements Request {
     public String getHeader(String key) {
         return headers.get(key);
     }
+
+    @Override
+    public String content() {
+        return content;
+    }
+
 }

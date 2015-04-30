@@ -85,9 +85,19 @@ public class HttpRequestParser {
 
     public HttpRequest createRequest() {
         if (hasUriParams()) {
-            return new HttpRequest(httpMethod(), uri().substring(0, uri().indexOf("?")), protocol(), parseHeaders(), mergedParams());
+            return new HttpRequest(httpMethod(),
+                    uri().substring(0, uri().indexOf("?")),
+                    protocol(),
+                    parseHeaders(),
+                    mergedParams(),
+                    content());
         }
-        return new HttpRequest(httpMethod(), uri(), protocol(), parseHeaders(), mergedParams());
+        return new HttpRequest(httpMethod(),
+                uri(),
+                protocol(),
+                parseHeaders(),
+                mergedParams(),
+                content());
     }
 
     private Map<String, String> mergedParams() {
@@ -103,4 +113,8 @@ public class HttpRequestParser {
     }
 
     private boolean hasUriParams() {return uri().contains("?");}
+
+    public String content() {
+        return request.get(request.size() - 1);
+    }
 }

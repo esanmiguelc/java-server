@@ -1,5 +1,7 @@
 package javaserver.Requests;
 
+import javaserver.Parser.RangeParser;
+
 import java.util.Map;
 
 public interface Request {
@@ -18,4 +20,6 @@ public interface Request {
     boolean containsHeader(String header);
 
     String getHeader(String key);
+
+    String content();
 }
