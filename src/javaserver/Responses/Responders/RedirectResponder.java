@@ -24,7 +24,7 @@ public class RedirectResponder implements Responder {
 
     @Override
     public List<String> additionalHeaders() {
-        return Arrays.asList("Location: http://localhost:5000/");
+        return Arrays.asList("Location: /");
     }
 
     @Override
